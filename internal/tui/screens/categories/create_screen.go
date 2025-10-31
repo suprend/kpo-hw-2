@@ -1,6 +1,7 @@
 package categories
 
 import (
+	"context"
 	"strings"
 
 	"kpo-hw-2/internal/domain"
@@ -64,7 +65,8 @@ func NewCreate() tui.Screen {
 
 				typ := domain.OperationType(typValue)
 
-				if _, err := ctx.Categories().CreateCategory(name, typ); err != nil {
+				createCmd := ctx.CategoryCommands().Create(name, typ)
+				if _, err := createCmd.Execute(context.Background()); err != nil {
 					screen.SetFieldError(fieldCategoryName, err.Error())
 					return tui.Result{}
 				}

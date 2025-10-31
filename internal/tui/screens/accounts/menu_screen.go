@@ -1,6 +1,8 @@
 package accountsmenu
 
 import (
+	"context"
+
 	"kpo-hw-2/internal/tui"
 	"kpo-hw-2/internal/tui/menus"
 )
@@ -13,7 +15,8 @@ func NewMenu() tui.Screen {
 			"Список счетов",
 			"Просмотреть все счета (пока без действий).",
 			func(ctx tui.ScreenContext, _ menus.Values) tui.Result {
-				accounts, err := ctx.Accounts().ListAccounts()
+				cmd := ctx.AccountCommands().List()
+				accounts, err := cmd.Execute(context.Background())
 				if err != nil {
 					return tui.Result{}
 				}

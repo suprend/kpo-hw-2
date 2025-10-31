@@ -8,7 +8,13 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 
+	"kpo-hw-2/internal/application/command"
+	accountcmd "kpo-hw-2/internal/application/command/account"
+	categorycmd "kpo-hw-2/internal/application/command/category"
+	"kpo-hw-2/internal/application/command/decorator"
+	operationcmd "kpo-hw-2/internal/application/command/operation"
 	appfacade "kpo-hw-2/internal/application/facade"
+	"kpo-hw-2/internal/domain"
 	domainfactory "kpo-hw-2/internal/domain/factory"
 	"kpo-hw-2/internal/infrastructure/id"
 	memoryrepo "kpo-hw-2/internal/infrastructure/repository/memory"
@@ -17,6 +23,16 @@ import (
 )
 
 func main() {
+	logFn, closeLog, err := openTimingLogger("logs/timings.log")
+	if err != nil {
+		log.Fatalf("не удалось открыть лог таймингов: %v", err)
+	}
+	defer func() {
+		if err := closeLog(); err != nil {
+			log.Printf("не удалось закрыть лог таймингов: %v", err)
+		}
+	}()
+
 	// shared dependencies
 	idGenerator := id.NewULIDGenerator()
 
@@ -42,10 +58,14 @@ func main() {
 		log.Fatal("главное меню не инициализировано")
 	}
 
+	accountCommands := newAccountCommands(accountFacade, logFn)
+	categoryCommands := newCategoryCommands(categoryFacade, logFn)
+	operationCommands := newOperationCommands(operationFacade, logFn)
+
 	model := tui.NewProgram(
-		accountFacade,
-		categoryFacade,
-		operationFacade,
+		accountCommands,
+		categoryCommands,
+		operationCommands,
 		rootScreen,
 	)
 
@@ -74,7 +94,8 @@ func openTimingLogger(path string) (func(name string, duration time.Duration, er
 
 	logger := log.New(file, "", log.LstdFlags)
 	logFn := func(name string, duration time.Duration, cmdErr error) {
-		logger.Printf("%s took %s (err=%v)", name, duration, cmdErr)
+		ms := float64(duration) / float64(time.Millisecond)
+		logger.Printf("%s took %.3fms (err=%v)", name, ms, cmdErr)
 	}
 
 	closeFn := func() error {
@@ -82,4 +103,64 @@ func openTimingLogger(path string) (func(name string, duration time.Duration, er
 	}
 
 	return logFn, closeFn, nil
+}
+
+func newAccountCommands(
+	facade appfacade.AccountFacade,
+	logFn func(string, time.Duration, error),
+) *accountcmd.Service {
+	timedBankAccount := decorator.Timed[*domain.BankAccount]{Log: logFn}
+	timedNoResult := decorator.Timed[command.NoResult]{Log: logFn}
+	timedList := decorator.Timed[[]*domain.BankAccount]{Log: logFn}
+
+	return accountcmd.NewService(
+		facade,
+		accountcmd.Decorators{
+			Create: []command.Decorator[*domain.BankAccount]{timedBankAccount},
+			Update: []command.Decorator[*domain.BankAccount]{timedBankAccount},
+			Delete: []command.Decorator[command.NoResult]{timedNoResult},
+			List:   []command.Decorator[[]*domain.BankAccount]{timedList},
+			Get:    []command.Decorator[*domain.BankAccount]{timedBankAccount},
+		},
+	)
+}
+
+func newCategoryCommands(
+	facade appfacade.CategoryFacade,
+	logFn func(string, time.Duration, error),
+) *categorycmd.Service {
+	timedCategory := decorator.Timed[*domain.Category]{Log: logFn}
+	timedNoResult := decorator.Timed[command.NoResult]{Log: logFn}
+	timedList := decorator.Timed[[]*domain.Category]{Log: logFn}
+
+	return categorycmd.NewService(
+		facade,
+		categorycmd.Decorators{
+			Create: []command.Decorator[*domain.Category]{timedCategory},
+			Update: []command.Decorator[*domain.Category]{timedCategory},
+			Delete: []command.Decorator[command.NoResult]{timedNoResult},
+			List:   []command.Decorator[[]*domain.Category]{timedList},
+			Get:    []command.Decorator[*domain.Category]{timedCategory},
+		},
+	)
+}
+
+func newOperationCommands(
+	facade appfacade.OperationFacade,
+	logFn func(string, time.Duration, error),
+) *operationcmd.Service {
+	timedOperation := decorator.Timed[*domain.Operation]{Log: logFn}
+	timedNoResult := decorator.Timed[command.NoResult]{Log: logFn}
+	timedList := decorator.Timed[[]*domain.Operation]{Log: logFn}
+
+	return operationcmd.NewService(
+		facade,
+		operationcmd.Decorators{
+			Create: []command.Decorator[*domain.Operation]{timedOperation},
+			Update: []command.Decorator[*domain.Operation]{timedOperation},
+			Delete: []command.Decorator[command.NoResult]{timedNoResult},
+			List:   []command.Decorator[[]*domain.Operation]{timedList},
+			Get:    []command.Decorator[*domain.Operation]{timedOperation},
+		},
+	)
 }

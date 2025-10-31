@@ -1,6 +1,7 @@
 package categories
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -64,12 +65,14 @@ func NewEdit(category *domain.Category) tui.Screen {
 				}
 
 				typ := domain.OperationType(typValue)
-				if _, err := ctx.Categories().UpdateCategory(category.ID(), name, typ); err != nil {
+				updateCmd := ctx.CategoryCommands().Update(category.ID(), name, typ)
+				if _, err := updateCmd.Execute(context.Background()); err != nil {
 					screen.SetFieldError(fieldEditCategoryName, err.Error())
 					return tui.Result{}
 				}
 
-				categories, err := ctx.Categories().ListCategories("")
+				listCmd := ctx.CategoryCommands().List("")
+				categories, err := listCmd.Execute(context.Background())
 				if err != nil {
 					return tui.Result{}
 				}
@@ -81,12 +84,14 @@ func NewEdit(category *domain.Category) tui.Screen {
 			"Удалить категорию",
 			"Удаление безвозвратно.",
 			func(ctx tui.ScreenContext, values menus.Values) tui.Result {
-				if err := ctx.Categories().DeleteCategory(category.ID()); err != nil {
+				deleteCmd := ctx.CategoryCommands().Delete(category.ID())
+				if _, err := deleteCmd.Execute(context.Background()); err != nil {
 					screen.SetFieldError(fieldEditCategoryName, err.Error())
 					return tui.Result{}
 				}
 
-				categories, err := ctx.Categories().ListCategories("")
+				listCmd := ctx.CategoryCommands().List("")
+				categories, err := listCmd.Execute(context.Background())
 				if err != nil {
 					return tui.Result{}
 				}

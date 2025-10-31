@@ -5,6 +5,9 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 
+	accountcmd "kpo-hw-2/internal/application/command/account"
+	categorycmd "kpo-hw-2/internal/application/command/category"
+	operationcmd "kpo-hw-2/internal/application/command/operation"
 	"kpo-hw-2/internal/application/facade"
 	"kpo-hw-2/internal/tui/styles"
 )
@@ -17,16 +20,16 @@ type Model struct {
 
 // NewProgram constructs Bubble Tea model with provided root screen.
 func NewProgram(
-	account facade.AccountFacade,
-	category facade.CategoryFacade,
-	operation facade.OperationFacade,
+	accountCommands *accountcmd.Service,
+	categoryCommands *categorycmd.Service,
+	operationCommands *operationcmd.Service,
 	root Screen,
 ) *Model {
 	m := &Model{
 		ctx: &programContext{
-			account:   account,
-			category:  category,
-			operation: operation,
+			accountCommands:   accountCommands,
+			categoryCommands:  categoryCommands,
+			operationCommands: operationCommands,
 		},
 	}
 
@@ -137,13 +140,25 @@ func (m *Model) push(screen Screen, cmds *[]tea.Cmd) {
 }
 
 type programContext struct {
-	account   facade.AccountFacade
-	category  facade.CategoryFacade
-	operation facade.OperationFacade
+	account           facade.AccountFacade
+	category          facade.CategoryFacade
+	operation         facade.OperationFacade
+	accountCommands   *accountcmd.Service
+	categoryCommands  *categorycmd.Service
+	operationCommands *operationcmd.Service
 }
 
 func (c *programContext) Accounts() facade.AccountFacade     { return c.account }
 func (c *programContext) Categories() facade.CategoryFacade  { return c.category }
 func (c *programContext) Operations() facade.OperationFacade { return c.operation }
+func (c *programContext) AccountCommands() *accountcmd.Service {
+	return c.accountCommands
+}
+func (c *programContext) CategoryCommands() *categorycmd.Service {
+	return c.categoryCommands
+}
+func (c *programContext) OperationCommands() *operationcmd.Service {
+	return c.operationCommands
+}
 
 var _ ScreenContext = (*programContext)(nil)

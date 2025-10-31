@@ -1,6 +1,7 @@
 package operations
 
 import (
+	"context"
 	"strings"
 	"time"
 
@@ -162,7 +163,8 @@ func NewFilter(accounts []*domain.BankAccount, categories []*domain.Category) tu
 					return tui.Result{}
 				}
 
-				operations, err := ctx.Operations().ListOperationsWithFilter(filter)
+				listCmd := ctx.OperationCommands().List(filter)
+				operations, err := listCmd.Execute(context.Background())
 				if err != nil {
 					screen.SetFieldError(fieldFilterStartDate, err.Error())
 					return tui.Result{}

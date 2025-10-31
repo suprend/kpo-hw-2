@@ -1,6 +1,7 @@
 package operations
 
 import (
+	"context"
 	"errors"
 	"strconv"
 	"strings"
@@ -138,14 +139,15 @@ func NewCreate(accounts []*domain.BankAccount, categories []*domain.Category) tu
 					return tui.Result{}
 				}
 
-				if _, err := ctx.Operations().CreateOperation(
+				createCmd := ctx.OperationCommands().Create(
 					categoryType,
 					domain.ID(accountID),
 					domain.ID(categoryID),
 					amountValue,
 					dateValue,
 					name,
-				); err != nil {
+				)
+				if _, err := createCmd.Execute(context.Background()); err != nil {
 					switch {
 					case errors.Is(err, domain.ErrInsufficientFunds):
 						screen.SetFieldError(fieldOperationAmount, "на счёте недостаточно средств")

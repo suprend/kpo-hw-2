@@ -1,6 +1,7 @@
 package accountsmenu
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"strconv"
@@ -76,12 +77,14 @@ func NewEdit(account *domain.BankAccount) tui.Screen {
 
 				balance, _ := strconv.ParseInt(balanceStr, 10, 64)
 
-				if _, err := ctx.Accounts().UpdateAccount(account.ID(), name, balance); err != nil {
+				updateCmd := ctx.AccountCommands().Update(account.ID(), name, balance)
+				if _, err := updateCmd.Execute(context.Background()); err != nil {
 					screen.SetFieldError(fieldEditName, err.Error())
 					return tui.Result{}
 				}
 
-				accounts, err := ctx.Accounts().ListAccounts()
+				listCmd := ctx.AccountCommands().List()
+				accounts, err := listCmd.Execute(context.Background())
 				if err != nil {
 					return tui.Result{}
 				}
@@ -93,12 +96,14 @@ func NewEdit(account *domain.BankAccount) tui.Screen {
 			"Удалить счёт",
 			"Удаление безвозвратно.",
 			func(ctx tui.ScreenContext, values menus.Values) tui.Result {
-				if err := ctx.Accounts().DeleteAccount(account.ID()); err != nil {
+				deleteCmd := ctx.AccountCommands().Delete(account.ID())
+				if _, err := deleteCmd.Execute(context.Background()); err != nil {
 					screen.SetFieldError(fieldEditName, err.Error())
 					return tui.Result{}
 				}
 
-				accounts, err := ctx.Accounts().ListAccounts()
+				listCmd := ctx.AccountCommands().List()
+				accounts, err := listCmd.Execute(context.Background())
 				if err != nil {
 					return tui.Result{}
 				}
