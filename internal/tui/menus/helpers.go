@@ -12,19 +12,17 @@ type InputConfig struct {
 	Placeholder string
 	Prompt      string
 	Initial     string
-	Validate    func(string) error
 	OnChange    func(string)
 }
 
 // SelectConfig describes configuration for select items.
 type SelectConfig struct {
 	InitialIndex int
-	Validate     func(string) error
 	OnChange     func(string)
 }
 
 // NewInputItem constructs an input menu entry with ready-to-use text input model.
-func NewInputItem(key, title, description string, cfg InputConfig) Item {
+func NewInputItem(key, title, description string, cfg InputConfig) MenuItem {
 	model := textinput.New()
 	if cfg.Prompt != "" {
 		model.Prompt = cfg.Prompt
@@ -41,48 +39,54 @@ func NewInputItem(key, title, description string, cfg InputConfig) Item {
 	model.TextStyle = styles.InputTextStyle
 	model.Cursor.Style = styles.InputCursorStyle
 
-	return Item{
-		Key:         key,
-		Title:       title,
-		Description: description,
-		Kind:        ItemInput,
-		Input: &InputField{
-			Model:    model,
-			Validate: cfg.Validate,
-			OnChange: cfg.OnChange,
-		},
+	return &inputItem{
+		key:         key,
+		title:       title,
+		description: description,
+		model:       model,
+		onChange:    cfg.OnChange,
 	}
 }
 
 // NewSelectItem constructs a select menu entry with predefined options.
-func NewSelectItem(key, title, description string, options []SelectOption, cfg SelectConfig) Item {
-	field := NewSelectField(options, cfg.InitialIndex, cfg.Validate, cfg.OnChange)
-
-	return Item{
-		Key:         key,
-		Title:       title,
-		Description: description,
-		Kind:        ItemSelect,
-		Select:      field,
+func NewSelectItem(key, title, description string, options []SelectOption, cfg SelectConfig) MenuItem {
+	item := &selectItem{
+		key:         key,
+		title:       title,
+		description: description,
+		options:     options,
+		onChange:    cfg.OnChange,
 	}
+
+	if len(options) == 0 {
+		item.index = 0
+		item.cursor = 0
+	} else {
+		idx := cfg.InitialIndex
+		if idx < 0 || idx >= len(options) {
+			idx = 0
+		}
+		item.index = idx
+		item.cursor = idx
+	}
+	return item
 }
 
 // NewActionItem constructs a clickable menu entry with provided handler.
 func NewActionItem(
 	key, title, description string,
 	action func(ctx tui.ScreenContext, values Values) tui.Result,
-) Item {
-	return Item{
-		Key:         key,
-		Title:       title,
-		Description: description,
-		Kind:        ItemAction,
-		Action:      action,
+) MenuItem {
+	return &actionItem{
+		key:         key,
+		title:       title,
+		description: description,
+		handler:     action,
 	}
 }
 
 // NewPopItem returns action item that performs back navigation.
-func NewPopItem(title, description string) Item {
+func NewPopItem(title, description string) MenuItem {
 	return NewActionItem("back", title, description, func(tui.ScreenContext, Values) tui.Result {
 		return tui.Result{Pop: true}
 	})

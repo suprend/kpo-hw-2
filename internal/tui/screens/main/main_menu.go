@@ -11,7 +11,7 @@ import (
 func New() tui.Screen {
 	var screen *menus.Screen
 
-	items := []menus.Item{
+	items := []menus.MenuItem{
 		menus.NewActionItem("accounts", "Счета", "Перейти к управлению счетами", func(tui.ScreenContext, menus.Values) tui.Result {
 			return tui.Result{Push: accountsmenu.NewMenu()}
 		}),

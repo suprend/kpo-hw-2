@@ -36,14 +36,13 @@ func NewEdit(account *domain.BankAccount) tui.Screen {
 		return nil
 	}
 
-	items := []menus.Item{
+	items := []menus.MenuItem{
 		menus.NewInputItem(
 			fieldEditName,
 			"Название счёта",
 			"",
 			menus.InputConfig{
-				Initial:  account.Name(),
-				Validate: validateName,
+				Initial: account.Name(),
 			},
 		),
 		menus.NewInputItem(
@@ -51,8 +50,7 @@ func NewEdit(account *domain.BankAccount) tui.Screen {
 			"Баланс",
 			"Введите целое число.",
 			menus.InputConfig{
-				Initial:  strconv.FormatInt(account.Balance(), 10),
-				Validate: validateBalance,
+				Initial: strconv.FormatInt(account.Balance(), 10),
 			},
 		),
 		menus.NewActionItem(

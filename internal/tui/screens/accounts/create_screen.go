@@ -19,14 +19,13 @@ func NewCreate() tui.Screen {
 		return menus.ValidateNonEmpty(value, "название не может быть пустым")
 	}
 
-	items := []menus.Item{
+	items := []menus.MenuItem{
 		menus.NewInputItem(
 			fieldAccountName,
 			"Название счёта",
 			"Введите название нового счёта.",
 			menus.InputConfig{
 				Placeholder: "Например, Основной",
-				Validate:    validateName,
 			},
 		),
 		menus.NewActionItem(

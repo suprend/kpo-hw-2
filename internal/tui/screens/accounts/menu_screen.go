@@ -7,7 +7,7 @@ import (
 
 // NewMenu returns main accounts management menu.
 func NewMenu() tui.Screen {
-	items := []menus.Item{
+	items := []menus.MenuItem{
 		menus.NewActionItem(
 			"list",
 			"Список счетов",

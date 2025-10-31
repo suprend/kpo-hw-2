@@ -10,7 +10,7 @@ import (
 
 // NewList builds a simple screen where each account rendered as idle menu item.
 func NewList(accounts []*domain.BankAccount) tui.Screen {
-	items := make([]menus.Item, 0, len(accounts)+1)
+	items := make([]menus.MenuItem, 0, len(accounts)+1)
 
 	for _, account := range accounts {
 		acc := account

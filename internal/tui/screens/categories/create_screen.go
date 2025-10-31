@@ -21,14 +21,13 @@ func NewCreate() tui.Screen {
 		return menus.ValidateNonEmpty(value, "название не может быть пустым")
 	}
 
-	items := []menus.Item{
+	items := []menus.MenuItem{
 		menus.NewInputItem(
 			fieldCategoryName,
 			"Название категории",
 			"Введите название категории.",
 			menus.InputConfig{
 				Placeholder: "Например, Продукты",
-				Validate:    validateName,
 			},
 		),
 		menus.NewSelectItem(
