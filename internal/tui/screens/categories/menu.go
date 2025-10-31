@@ -8,8 +8,12 @@ import (
 // NewMenu constructs placeholder screen for category management.
 func NewMenu() tui.Screen {
 	items := []menus.MenuItem{
-		menus.NewActionItem("list", "Список категорий", "Открыть список доступных категорий", func(tui.ScreenContext, menus.Values) tui.Result {
-			return tui.Result{}
+		menus.NewActionItem("list", "Список категорий", "Открыть список доступных категорий", func(ctx tui.ScreenContext, _ menus.Values) tui.Result {
+			categories, err := ctx.Categories().ListCategories("")
+			if err != nil {
+				return tui.Result{}
+			}
+			return tui.Result{Push: NewList(categories)}
 		}),
 		menus.NewActionItem("create", "Создать категорию", "Добавить новую категорию", func(tui.ScreenContext, menus.Values) tui.Result {
 			return tui.Result{Push: NewCreate()}

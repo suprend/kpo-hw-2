@@ -49,7 +49,7 @@ func (b *BankAccount) ApplyOperation(operation *Operation) error {
 	case OperationTypeExpense:
 		amount := operation.Amount()
 		if amount > b.balance {
-			return ErrInvalidOperation
+			return ErrInsufficientFunds
 		}
 		b.balance -= amount
 		return nil

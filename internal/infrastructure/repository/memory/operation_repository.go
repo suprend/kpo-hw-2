@@ -3,9 +3,9 @@ package memory
 import (
 	"sort"
 	"sync"
-	"time"
 
 	"kpo-hw-2/internal/domain"
+	"kpo-hw-2/internal/domain/query"
 	"kpo-hw-2/internal/domain/repository"
 )
 
@@ -71,20 +71,36 @@ func (r *operationRepository) Get(id domain.ID) (*domain.Operation, error) {
 	return &clone, nil
 }
 
-func (r *operationRepository) ListByAccountAndPeriod(accountID domain.ID, from, to time.Time) ([]*domain.Operation, error) {
+func (r *operationRepository) ListByFilter(filter query.OperationFilter) ([]*domain.Operation, error) {
 	r.mu.RLock()
+
+	accountID := filter.AccountID()
+	categoryID := filter.CategoryID()
+	typ := filter.Type()
+	from, to := filter.Period()
 
 	var result []*domain.Operation
 	for _, op := range r.operations {
-		if op.BankAccountID() != accountID {
+		if accountID != "" && op.BankAccountID() != accountID {
+			continue
+		}
+		if categoryID != "" && op.CategoryID() != categoryID {
+			continue
+		}
+		if typ != "" && op.Type() != typ {
 			continue
 		}
 
 		opDate := op.Date()
-		if (opDate.Equal(from) || opDate.After(from)) && (opDate.Equal(to) || opDate.Before(to)) {
-			clone := *op
-			result = append(result, &clone)
+		if from != nil && opDate.Before(*from) {
+			continue
 		}
+		if to != nil && opDate.After(*to) {
+			continue
+		}
+
+		clone := *op
+		result = append(result, &clone)
 	}
 	r.mu.RUnlock()
 

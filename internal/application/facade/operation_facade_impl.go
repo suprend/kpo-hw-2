@@ -5,6 +5,7 @@ import (
 
 	"kpo-hw-2/internal/domain"
 	domainfactory "kpo-hw-2/internal/domain/factory"
+	"kpo-hw-2/internal/domain/query"
 	"kpo-hw-2/internal/domain/repository"
 )
 
@@ -152,7 +153,7 @@ func (f *operationFacade) buildOperationContext(
 	}
 
 	if category.Type() != op.Type() {
-		return nil, domain.ErrInvalidOperation
+		return nil, domain.ErrOperationTypeMismatch
 	}
 
 	return &operationContext{
@@ -217,20 +218,20 @@ func (f *operationFacade) updateBalanceForMove(oldOp, newOp *domain.Operation) e
 	return nil
 }
 
-func (f *operationFacade) ListOperations(
-	accountID domain.ID,
-	from time.Time,
-	to time.Time,
-) ([]*domain.Operation, error) {
-	if accountID == "" {
+func (f *operationFacade) ListOperationsWithFilter(filter query.OperationFilter) ([]*domain.Operation, error) {
+	from, to := filter.Period()
+	if from != nil && to != nil && from.After(*to) {
 		return nil, domain.ErrInvalidOperation
 	}
 
-	if from.After(to) {
+	switch typ := filter.Type(); typ {
+	case "":
+	case domain.OperationTypeIncome, domain.OperationTypeExpense:
+	default:
 		return nil, domain.ErrInvalidOperation
 	}
 
-	return f.operations.ListByAccountAndPeriod(accountID, from, to)
+	return f.operations.ListByFilter(filter)
 }
 
 func (f *operationFacade) GetOperation(id domain.ID) (*domain.Operation, error) {

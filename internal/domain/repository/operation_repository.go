@@ -1,9 +1,8 @@
 package repository
 
 import (
-	"time"
-
 	"kpo-hw-2/internal/domain"
+	"kpo-hw-2/internal/domain/query"
 )
 
 // OperationRepository persists financial operations.
@@ -17,6 +16,6 @@ type OperationRepository interface {
 	Delete(id domain.ID) error
 	// Get fetches operation by ID. Returns ErrNotFound if missing.
 	Get(id domain.ID) (*domain.Operation, error)
-	// ListByAccountAndPeriod returns operations for account within [from, to] sorted by date ascending.
-	ListByAccountAndPeriod(accountID domain.ID, from, to time.Time) ([]*domain.Operation, error)
+	// ListByFilter returns operations matching provided filter criteria.
+	ListByFilter(filter query.OperationFilter) ([]*domain.Operation, error)
 }

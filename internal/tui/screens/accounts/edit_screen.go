@@ -81,7 +81,11 @@ func NewEdit(account *domain.BankAccount) tui.Screen {
 					return tui.Result{}
 				}
 
-				return tui.Result{Pop: true}
+				accounts, err := ctx.Accounts().ListAccounts()
+				if err != nil {
+					return tui.Result{}
+				}
+				return tui.Result{Replace: NewList(accounts)}
 			},
 		),
 		menus.NewActionItem(
@@ -94,7 +98,11 @@ func NewEdit(account *domain.BankAccount) tui.Screen {
 					return tui.Result{}
 				}
 
-				return tui.Result{Pop: true}
+				accounts, err := ctx.Accounts().ListAccounts()
+				if err != nil {
+					return tui.Result{}
+				}
+				return tui.Result{Replace: NewList(accounts)}
 			},
 		),
 		menus.NewPopItem("Назад", "Вернуться к списку"),
