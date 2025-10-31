@@ -1,0 +1,21 @@
+package categories
+
+import (
+	"kpo-hw-2/internal/tui"
+	"kpo-hw-2/internal/tui/menus"
+)
+
+// NewMenu constructs placeholder screen for category management.
+func NewMenu() tui.Screen {
+	items := []menus.Item{
+		menus.NewActionItem("list", "Список категорий", "Открыть список доступных категорий", func(tui.ScreenContext, menus.Values) tui.Result {
+			return tui.Result{}
+		}),
+		menus.NewActionItem("create", "Создать категорию", "Добавить новую категорию", func(tui.ScreenContext, menus.Values) tui.Result {
+			return tui.Result{Push: NewCreate()}
+		}),
+		menus.NewPopItem("Назад", "Вернуться в главное меню"),
+	}
+
+	return menus.NewScreen("Категории", "Выберите действие.", items)
+}
