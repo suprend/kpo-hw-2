@@ -1,7 +1,6 @@
 package accountsmenu
 
 import (
-	"context"
 	"strings"
 
 	"kpo-hw-2/internal/tui"
@@ -42,7 +41,7 @@ func NewCreate() tui.Screen {
 				}
 
 				createCmd := ctx.AccountCommands().Create(name)
-				if _, err := createCmd.Execute(context.Background()); err != nil {
+				if _, err := createCmd.Execute(ctx.Context()); err != nil {
 					screen.SetFieldError(fieldAccountName, err.Error())
 					return tui.Result{}
 				}

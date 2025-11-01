@@ -1,7 +1,6 @@
 package operations
 
 import (
-	"context"
 	"errors"
 	"strconv"
 	"strings"
@@ -147,7 +146,7 @@ func NewCreate(accounts []*domain.BankAccount, categories []*domain.Category) tu
 					dateValue,
 					name,
 				)
-				if _, err := createCmd.Execute(context.Background()); err != nil {
+				if _, err := createCmd.Execute(ctx.Context()); err != nil {
 					switch {
 					case errors.Is(err, domain.ErrInsufficientFunds):
 						screen.SetFieldError(fieldOperationAmount, "на счёте недостаточно средств")

@@ -1,0 +1,71 @@
+{
+  "accounts": [
+    {
+      "ID": "01K90AXK75Y1S0KGTBSK1Y5V4Q",
+      "Name": "втб",
+      "Balance": 0
+    },
+    {
+      "ID": "01K90AXK75BDAVS6655J8Y54GH",
+      "Name": "сбер",
+      "Balance": 0
+    },
+    {
+      "ID": "01K90AXK75B6NMBZ03F3S7YG9W",
+      "Name": "тбанк",
+      "Balance": 4100
+    }
+  ],
+  "categories": [
+    {
+      "ID": "01K90AXK75JJZXVJMCZFEHAHF2",
+      "Type": "expense",
+      "Name": "еда"
+    },
+    {
+      "ID": "01K90AXK75AQ6M87WXRVZFCY5B",
+      "Type": "expense",
+      "Name": "развлечения"
+    },
+    {
+      "ID": "01K90AXK75MD6P885RVX2HKAGJ",
+      "Type": "expense",
+      "Name": "техника"
+    },
+    {
+      "ID": "01K90AXK751HTBK3ZRP154K5PH",
+      "Type": "income",
+      "Name": "зарплата"
+    },
+    {
+      "ID": "01K90AXK75P2YCR92C9038YW7J",
+      "Type": "income",
+      "Name": "репетиторство"
+    },
+    {
+      "ID": "01K90AXK75B513AF4EWFBAPSMR",
+      "Type": "income",
+      "Name": "такси"
+    }
+  ],
+  "operations": [
+    {
+      "ID": "01K90AXK7569GS6R2GPX1F5WVE",
+      "Type": "income",
+      "BankAccountID": "01K90AXK75B6NMBZ03F3S7YG9W",
+      "CategoryID": "01K90AXK751HTBK3ZRP154K5PH",
+      "Amount": 2000,
+      "Date": "2025-11-01T00:00:00Z",
+      "Description": "яндекс"
+    },
+    {
+      "ID": "01K90AXK75HVK9YTNKGNCR0DRQ",
+      "Type": "income",
+      "BankAccountID": "01K90AXK75B6NMBZ03F3S7YG9W",
+      "CategoryID": "01K90AXK751HTBK3ZRP154K5PH",
+      "Amount": 2100,
+      "Date": "2025-12-01T00:00:00Z",
+      "Description": "яндекс"
+    }
+  ]
+}

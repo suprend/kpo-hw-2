@@ -1,7 +1,6 @@
 package operations
 
 import (
-	"context"
 	"fmt"
 	"strings"
 
@@ -36,19 +35,19 @@ func NewList(filter query.OperationFilter, operations []*domain.Operation, accou
 			description,
 			func(ctx tui.ScreenContext, _ menus.Values) tui.Result {
 				getCmd := ctx.OperationCommands().Get(op.ID())
-				operation, err := getCmd.Execute(context.Background())
+				operation, err := getCmd.Execute(ctx.Context())
 				if err != nil {
 					return tui.Result{}
 				}
 
 				accountsCmd := ctx.AccountCommands().List()
-				accounts, err := accountsCmd.Execute(context.Background())
+				accounts, err := accountsCmd.Execute(ctx.Context())
 				if err != nil {
 					return tui.Result{}
 				}
 
 				categoriesCmd := ctx.CategoryCommands().List("")
-				categories, err := categoriesCmd.Execute(context.Background())
+				categories, err := categoriesCmd.Execute(ctx.Context())
 				if err != nil {
 					return tui.Result{}
 				}

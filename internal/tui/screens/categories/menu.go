@@ -1,8 +1,6 @@
 package categories
 
 import (
-	"context"
-
 	"kpo-hw-2/internal/tui"
 	"kpo-hw-2/internal/tui/menus"
 )
@@ -12,7 +10,7 @@ func NewMenu() tui.Screen {
 	items := []menus.MenuItem{
 		menus.NewActionItem("list", "Список категорий", "Открыть список доступных категорий", func(ctx tui.ScreenContext, _ menus.Values) tui.Result {
 			cmd := ctx.CategoryCommands().List("")
-			categories, err := cmd.Execute(context.Background())
+			categories, err := cmd.Execute(ctx.Context())
 			if err != nil {
 				return tui.Result{}
 			}

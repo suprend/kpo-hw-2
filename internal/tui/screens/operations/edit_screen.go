@@ -1,7 +1,6 @@
 package operations
 
 import (
-	"context"
 	"errors"
 	"strconv"
 	"strings"
@@ -138,7 +137,7 @@ func NewEdit(operation *domain.Operation, accounts []*domain.BankAccount, catego
 					dateValue,
 					name,
 				)
-				if _, err := updateCmd.Execute(context.Background()); err != nil {
+				if _, err := updateCmd.Execute(ctx.Context()); err != nil {
 					switch {
 					case errors.Is(err, domain.ErrInsufficientFunds):
 						screen.SetFieldError(fieldOperationAmount, "на счёте недостаточно средств")
@@ -159,7 +158,7 @@ func NewEdit(operation *domain.Operation, accounts []*domain.BankAccount, catego
 			"Удаление безвозвратно.",
 			func(ctx tui.ScreenContext, values menus.Values) tui.Result {
 				deleteCmd := ctx.OperationCommands().Delete(operation.ID())
-				if _, err := deleteCmd.Execute(context.Background()); err != nil {
+				if _, err := deleteCmd.Execute(ctx.Context()); err != nil {
 					screen.SetFieldError(fieldOperationName, err.Error())
 					return tui.Result{}
 				}

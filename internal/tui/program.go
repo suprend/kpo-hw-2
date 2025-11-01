@@ -1,14 +1,16 @@
 package tui
 
 import (
+	"context"
 	"fmt"
 
 	tea "github.com/charmbracelet/bubbletea"
 
 	accountcmd "kpo-hw-2/internal/application/command/account"
 	categorycmd "kpo-hw-2/internal/application/command/category"
+	exportcmd "kpo-hw-2/internal/application/command/export"
+	fileimportcmd "kpo-hw-2/internal/application/command/import"
 	operationcmd "kpo-hw-2/internal/application/command/operation"
-	"kpo-hw-2/internal/application/facade"
 	"kpo-hw-2/internal/tui/styles"
 )
 
@@ -20,16 +22,25 @@ type Model struct {
 
 // NewProgram constructs Bubble Tea model with provided root screen.
 func NewProgram(
+	baseCtx context.Context,
 	accountCommands *accountcmd.Service,
 	categoryCommands *categorycmd.Service,
 	operationCommands *operationcmd.Service,
+	exportCommands *exportcmd.Service,
+	importCommands *fileimportcmd.Service,
 	root Screen,
 ) *Model {
+	if baseCtx == nil {
+		baseCtx = context.Background()
+	}
 	m := &Model{
 		ctx: &programContext{
+			ctx:               baseCtx,
 			accountCommands:   accountCommands,
 			categoryCommands:  categoryCommands,
 			operationCommands: operationCommands,
+			exportCommands:    exportCommands,
+			importCommands:    importCommands,
 		},
 	}
 
@@ -140,17 +151,18 @@ func (m *Model) push(screen Screen, cmds *[]tea.Cmd) {
 }
 
 type programContext struct {
-	account           facade.AccountFacade
-	category          facade.CategoryFacade
-	operation         facade.OperationFacade
+	ctx               context.Context
 	accountCommands   *accountcmd.Service
 	categoryCommands  *categorycmd.Service
 	operationCommands *operationcmd.Service
+	exportCommands    *exportcmd.Service
+	importCommands    *fileimportcmd.Service
 }
 
-func (c *programContext) Accounts() facade.AccountFacade     { return c.account }
-func (c *programContext) Categories() facade.CategoryFacade  { return c.category }
-func (c *programContext) Operations() facade.OperationFacade { return c.operation }
+func (c *programContext) Context() context.Context {
+	return c.ctx
+}
+
 func (c *programContext) AccountCommands() *accountcmd.Service {
 	return c.accountCommands
 }
@@ -159,6 +171,12 @@ func (c *programContext) CategoryCommands() *categorycmd.Service {
 }
 func (c *programContext) OperationCommands() *operationcmd.Service {
 	return c.operationCommands
+}
+func (c *programContext) ExportCommands() *exportcmd.Service {
+	return c.exportCommands
+}
+func (c *programContext) ImportCommands() *fileimportcmd.Service {
+	return c.importCommands
 }
 
 var _ ScreenContext = (*programContext)(nil)

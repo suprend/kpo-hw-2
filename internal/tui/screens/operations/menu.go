@@ -1,7 +1,6 @@
 package operations
 
 import (
-	"context"
 	"fmt"
 	"strings"
 
@@ -14,13 +13,13 @@ func NewMenu() tui.Screen {
 	items := []menus.MenuItem{
 		menus.NewActionItem("list", "Список операций", "Просмотреть операции с фильтрами.", func(ctx tui.ScreenContext, _ menus.Values) tui.Result {
 			accountCmd := ctx.AccountCommands().List()
-			accounts, err := accountCmd.Execute(context.Background())
+			accounts, err := accountCmd.Execute(ctx.Context())
 			if err != nil {
 				return tui.Result{Push: errorScreen("Ошибка", fmt.Sprintf("Не удалось получить список счетов:\n%s", err.Error()))}
 			}
 
 			categoryCmd := ctx.CategoryCommands().List("")
-			categories, err := categoryCmd.Execute(context.Background())
+			categories, err := categoryCmd.Execute(ctx.Context())
 			if err != nil {
 				return tui.Result{Push: errorScreen("Ошибка", fmt.Sprintf("Не удалось получить список категорий:\n%s", err.Error()))}
 			}
@@ -29,13 +28,13 @@ func NewMenu() tui.Screen {
 		}),
 		menus.NewActionItem("create", "Добавить операцию", "Создать новую финансовую операцию.", func(ctx tui.ScreenContext, _ menus.Values) tui.Result {
 			accountCmd := ctx.AccountCommands().List()
-			accounts, err := accountCmd.Execute(context.Background())
+			accounts, err := accountCmd.Execute(ctx.Context())
 			if err != nil {
 				return tui.Result{Push: errorScreen("Ошибка", fmt.Sprintf("Не удалось получить список счетов:\n%s", err.Error()))}
 			}
 
 			categoryCmd := ctx.CategoryCommands().List("")
-			categories, err := categoryCmd.Execute(context.Background())
+			categories, err := categoryCmd.Execute(ctx.Context())
 			if err != nil {
 				return tui.Result{Push: errorScreen("Ошибка", fmt.Sprintf("Не удалось получить список категорий:\n%s", err.Error()))}
 			}

@@ -12,8 +12,11 @@ type InputConfig struct {
 	Placeholder string
 	Prompt      string
 	Initial     string
+	Width       int
 	OnChange    func(string)
 }
+
+const defaultInputWidth = 20
 
 // SelectConfig describes configuration for select items.
 type SelectConfig struct {
@@ -27,13 +30,24 @@ func NewInputItem(key, title, description string, cfg InputConfig) MenuItem {
 	if cfg.Prompt != "" {
 		model.Prompt = cfg.Prompt
 	}
+	width := cfg.Width
+	if width < defaultInputWidth {
+		width = defaultInputWidth
+	}
 	if cfg.Placeholder != "" {
 		model.Placeholder = cfg.Placeholder
-		model.Width = len([]rune(cfg.Placeholder))
+		if phLen := len([]rune(cfg.Placeholder)); phLen > width {
+			width = phLen
+		}
 	}
 	if cfg.Initial != "" {
 		model.SetValue(cfg.Initial)
+		if initialLen := len([]rune(cfg.Initial)); initialLen > width {
+			width = initialLen
+		}
 	}
+	model.Width = width
+	model.CharLimit = 0
 	model.PromptStyle = styles.InputPromptStyle
 	model.PlaceholderStyle = styles.InputPlaceholderStyle
 	model.TextStyle = styles.InputTextStyle

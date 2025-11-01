@@ -5,6 +5,7 @@ import (
 	"kpo-hw-2/internal/tui/menus"
 	accountsmenu "kpo-hw-2/internal/tui/screens/accounts"
 	categoriesmenu "kpo-hw-2/internal/tui/screens/categories"
+	filesmenu "kpo-hw-2/internal/tui/screens/files"
 	operationsmenu "kpo-hw-2/internal/tui/screens/operations"
 )
 
@@ -21,6 +22,9 @@ func New() tui.Screen {
 		}),
 		menus.NewActionItem("operations", "Операции", "Работа с финансовыми операциями", func(tui.ScreenContext, menus.Values) tui.Result {
 			return tui.Result{Push: operationsmenu.NewMenu()}
+		}),
+		menus.NewActionItem("files", "Работа с файлами", "Экспорт и другие операции с файлами.", func(tui.ScreenContext, menus.Values) tui.Result {
+			return tui.Result{Push: filesmenu.NewMenu()}
 		}),
 		menus.NewPopItem("Выход", "Завершить работу программы"),
 	}
