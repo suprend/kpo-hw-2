@@ -9,7 +9,7 @@ import (
 )
 
 func registerUI(container di.Container) error {
-	if err := di.Register[tui.Screen](container, func(di.Container) (tui.Screen, error) {
+	if err := di.Register(container, func(di.Container) (tui.Screen, error) {
 		screen := mainmenu.New()
 		if screen == nil {
 			return nil, fmt.Errorf("bootstrap: root screen is nil")

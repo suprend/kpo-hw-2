@@ -9,7 +9,7 @@ import (
 )
 
 func registerDomain(container di.Container) error {
-	if err := di.Register[domainfactory.BankAccountFactory](container, func(c di.Container) (domainfactory.BankAccountFactory, error) {
+	if err := di.Register(container, func(c di.Container) (domainfactory.BankAccountFactory, error) {
 		idGenerator, err := di.Resolve[domain.IDGenerator](c)
 		if err != nil {
 			return nil, err
@@ -19,7 +19,7 @@ func registerDomain(container di.Container) error {
 		return fmt.Errorf("bootstrap: register bank account factory: %w", err)
 	}
 
-	if err := di.Register[domainfactory.CategoryFactory](container, func(c di.Container) (domainfactory.CategoryFactory, error) {
+	if err := di.Register(container, func(c di.Container) (domainfactory.CategoryFactory, error) {
 		idGenerator, err := di.Resolve[domain.IDGenerator](c)
 		if err != nil {
 			return nil, err
@@ -29,7 +29,7 @@ func registerDomain(container di.Container) error {
 		return fmt.Errorf("bootstrap: register category factory: %w", err)
 	}
 
-	if err := di.Register[domainfactory.OperationFactory](container, func(c di.Container) (domainfactory.OperationFactory, error) {
+	if err := di.Register(container, func(c di.Container) (domainfactory.OperationFactory, error) {
 		idGenerator, err := di.Resolve[domain.IDGenerator](c)
 		if err != nil {
 			return nil, err

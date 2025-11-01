@@ -12,7 +12,7 @@ import (
 )
 
 func registerApplication(container di.Container) error {
-	if err := di.Register[appfacade.AccountFacade](container, func(c di.Container) (appfacade.AccountFacade, error) {
+	if err := di.Register(container, func(c di.Container) (appfacade.AccountFacade, error) {
 		factory, err := di.Resolve[domainfactory.BankAccountFactory](c)
 		if err != nil {
 			return nil, err
@@ -26,7 +26,7 @@ func registerApplication(container di.Container) error {
 		return fmt.Errorf("bootstrap: register account facade: %w", err)
 	}
 
-	if err := di.Register[appfacade.CategoryFacade](container, func(c di.Container) (appfacade.CategoryFacade, error) {
+	if err := di.Register(container, func(c di.Container) (appfacade.CategoryFacade, error) {
 		factory, err := di.Resolve[domainfactory.CategoryFactory](c)
 		if err != nil {
 			return nil, err
@@ -40,7 +40,7 @@ func registerApplication(container di.Container) error {
 		return fmt.Errorf("bootstrap: register category facade: %w", err)
 	}
 
-	if err := di.Register[appfacade.OperationFacade](container, func(c di.Container) (appfacade.OperationFacade, error) {
+	if err := di.Register(container, func(c di.Container) (appfacade.OperationFacade, error) {
 		factory, err := di.Resolve[domainfactory.OperationFactory](c)
 		if err != nil {
 			return nil, err
@@ -62,7 +62,7 @@ func registerApplication(container di.Container) error {
 		return fmt.Errorf("bootstrap: register operation facade: %w", err)
 	}
 
-	if err := di.Register[*fileexport.Service](container, func(c di.Container) (*fileexport.Service, error) {
+	if err := di.Register(container, func(c di.Container) (*fileexport.Service, error) {
 		accountRepo, err := di.Resolve[repository.AccountRepository](c)
 		if err != nil {
 			return nil, err
@@ -85,7 +85,7 @@ func registerApplication(container di.Container) error {
 		return fmt.Errorf("bootstrap: register export service: %w", err)
 	}
 
-	if err := di.Register[*fileimport.Service](container, func(c di.Container) (*fileimport.Service, error) {
+	if err := di.Register(container, func(c di.Container) (*fileimport.Service, error) {
 		accountFacade, err := di.Resolve[appfacade.AccountFacade](c)
 		if err != nil {
 			return nil, err

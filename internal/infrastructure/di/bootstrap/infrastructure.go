@@ -15,19 +15,19 @@ func registerInfrastructure(container di.Container) error {
 		return fmt.Errorf("bootstrap: provide id generator: %w", err)
 	}
 
-	if err := di.Register[repository.AccountRepository](container, func(di.Container) (repository.AccountRepository, error) {
+	if err := di.Register(container, func(di.Container) (repository.AccountRepository, error) {
 		return memoryrepo.NewAccountRepository(), nil
 	}); err != nil {
 		return fmt.Errorf("bootstrap: register account repository: %w", err)
 	}
 
-	if err := di.Register[repository.CategoryRepository](container, func(di.Container) (repository.CategoryRepository, error) {
+	if err := di.Register(container, func(di.Container) (repository.CategoryRepository, error) {
 		return memoryrepo.NewCategoryRepository(), nil
 	}); err != nil {
 		return fmt.Errorf("bootstrap: register category repository: %w", err)
 	}
 
-	if err := di.Register[repository.OperationRepository](container, func(di.Container) (repository.OperationRepository, error) {
+	if err := di.Register(container, func(di.Container) (repository.OperationRepository, error) {
 		return memoryrepo.NewOperationRepository(), nil
 	}); err != nil {
 		return fmt.Errorf("bootstrap: register operation repository: %w", err)

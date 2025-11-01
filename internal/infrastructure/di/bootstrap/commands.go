@@ -20,7 +20,7 @@ import (
 )
 
 func registerCommands(container di.Container) error {
-	if err := di.Register[*accountcmd.Service](container, func(c di.Container) (*accountcmd.Service, error) {
+	if err := di.Register(container, func(c di.Container) (*accountcmd.Service, error) {
 		facade, err := di.Resolve[appfacade.AccountFacade](c)
 		if err != nil {
 			return nil, err
@@ -48,7 +48,7 @@ func registerCommands(container di.Container) error {
 		return fmt.Errorf("bootstrap: register account commands: %w", err)
 	}
 
-	if err := di.Register[*categorycmd.Service](container, func(c di.Container) (*categorycmd.Service, error) {
+	if err := di.Register(container, func(c di.Container) (*categorycmd.Service, error) {
 		facade, err := di.Resolve[appfacade.CategoryFacade](c)
 		if err != nil {
 			return nil, err
@@ -76,7 +76,7 @@ func registerCommands(container di.Container) error {
 		return fmt.Errorf("bootstrap: register category commands: %w", err)
 	}
 
-	if err := di.Register[*operationcmd.Service](container, func(c di.Container) (*operationcmd.Service, error) {
+	if err := di.Register(container, func(c di.Container) (*operationcmd.Service, error) {
 		facade, err := di.Resolve[appfacade.OperationFacade](c)
 		if err != nil {
 			return nil, err
@@ -104,7 +104,7 @@ func registerCommands(container di.Container) error {
 		return fmt.Errorf("bootstrap: register operation commands: %w", err)
 	}
 
-	if err := di.Register[*exportcmd.Service](container, func(c di.Container) (*exportcmd.Service, error) {
+	if err := di.Register(container, func(c di.Container) (*exportcmd.Service, error) {
 		service, err := di.Resolve[*fileexport.Service](c)
 		if err != nil {
 			return nil, err
@@ -129,7 +129,7 @@ func registerCommands(container di.Container) error {
 		return fmt.Errorf("bootstrap: register export commands: %w", err)
 	}
 
-	if err := di.Register[*fileimportcmd.Service](container, func(c di.Container) (*fileimportcmd.Service, error) {
+	if err := di.Register(container, func(c di.Container) (*fileimportcmd.Service, error) {
 		service, err := di.Resolve[*fileimport.Service](c)
 		if err != nil {
 			return nil, err
