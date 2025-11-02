@@ -32,22 +32,12 @@ func (i *JSONImporter) Parse(data []byte) (filesmodel.Payload, error) {
 		return filesmodel.Payload{}, nil
 	}
 
-	var dto payloadDTO
-	if err := json.Unmarshal(data, &dto); err != nil {
+	var payload filesmodel.Payload
+	if err := json.Unmarshal(data, &payload); err != nil {
 		return filesmodel.Payload{}, err
 	}
 
-	return filesmodel.Payload{
-		Accounts:   dto.Accounts,
-		Categories: dto.Categories,
-		Operations: dto.Operations,
-	}, nil
-}
-
-type payloadDTO struct {
-	Accounts   []filesmodel.Account   `json:"accounts"`
-	Categories []filesmodel.Category  `json:"categories"`
-	Operations []filesmodel.Operation `json:"operations"`
+	return payload, nil
 }
 
 var _ fileimport.Importer = (*JSONImporter)(nil)

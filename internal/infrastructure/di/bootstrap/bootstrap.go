@@ -6,6 +6,7 @@ import (
 	"time"
 
 	accountcmd "kpo-hw-2/internal/application/command/account"
+	analyticscmd "kpo-hw-2/internal/application/command/analytics"
 	categorycmd "kpo-hw-2/internal/application/command/category"
 	exportcmd "kpo-hw-2/internal/application/command/export"
 	importcmd "kpo-hw-2/internal/application/command/import"
@@ -80,6 +81,10 @@ func Build(
 	if err != nil {
 		return nil, fmt.Errorf("bootstrap: resolve import commands: %w", err)
 	}
+	analyticsCommands, err := di.Resolve[*analyticscmd.Service](container)
+	if err != nil {
+		return nil, fmt.Errorf("bootstrap: resolve analytics commands: %w", err)
+	}
 
 	rootScreen, err := di.Resolve[tui.Screen](container)
 	if err != nil {
@@ -93,6 +98,7 @@ func Build(
 		operationCommands,
 		fileExportCommands,
 		fileImportCommands,
+		analyticsCommands,
 		rootScreen,
 	)
 

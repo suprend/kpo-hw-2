@@ -7,6 +7,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 
 	accountcmd "kpo-hw-2/internal/application/command/account"
+	analyticscmd "kpo-hw-2/internal/application/command/analytics"
 	categorycmd "kpo-hw-2/internal/application/command/category"
 	exportcmd "kpo-hw-2/internal/application/command/export"
 	fileimportcmd "kpo-hw-2/internal/application/command/import"
@@ -28,6 +29,7 @@ func NewProgram(
 	operationCommands *operationcmd.Service,
 	exportCommands *exportcmd.Service,
 	importCommands *fileimportcmd.Service,
+	analyticsCommands *analyticscmd.Service,
 	root Screen,
 ) *Model {
 	if baseCtx == nil {
@@ -41,6 +43,7 @@ func NewProgram(
 			operationCommands: operationCommands,
 			exportCommands:    exportCommands,
 			importCommands:    importCommands,
+			analyticsCommands: analyticsCommands,
 		},
 	}
 
@@ -157,6 +160,7 @@ type programContext struct {
 	operationCommands *operationcmd.Service
 	exportCommands    *exportcmd.Service
 	importCommands    *fileimportcmd.Service
+	analyticsCommands *analyticscmd.Service
 }
 
 func (c *programContext) Context() context.Context {
@@ -177,6 +181,9 @@ func (c *programContext) ExportCommands() *exportcmd.Service {
 }
 func (c *programContext) ImportCommands() *fileimportcmd.Service {
 	return c.importCommands
+}
+func (c *programContext) AnalyticsCommands() *analyticscmd.Service {
+	return c.analyticsCommands
 }
 
 var _ ScreenContext = (*programContext)(nil)

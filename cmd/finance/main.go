@@ -32,9 +32,13 @@ func main() {
 		logFn,
 		[]fileexport.Exporter{
 			infraexport.NewJSONExporter(),
+			infraexport.NewCSVExporter(),
+			infraexport.NewYAMLExporter(),
 		},
 		[]fileimport.Importer{
 			infraimport.NewJSONImporter(),
+			infraimport.NewCSVImporter(),
+			infraimport.NewYAMLImporter(),
 		},
 	)
 	if err != nil {

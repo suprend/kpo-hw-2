@@ -4,6 +4,7 @@ import (
 	"strings"
 	"time"
 
+	appanalytics "kpo-hw-2/internal/application/analytics"
 	"kpo-hw-2/internal/domain"
 	"kpo-hw-2/internal/domain/query"
 	"kpo-hw-2/internal/tui"
@@ -169,7 +170,13 @@ func NewFilter(accounts []*domain.BankAccount, categories []*domain.Category) tu
 					return tui.Result{}
 				}
 
-				return tui.Result{Push: NewList(filter, operations, accounts, categories)}
+				totals, totalsErr := computeTotals(ctx, operations)
+				if totalsErr != nil {
+					screen.SetFieldError(fieldFilterStartDate, totalsErr.Error())
+					return tui.Result{}
+				}
+
+				return tui.Result{Push: NewList(filter, operations, accounts, categories, totals)}
 			},
 		),
 		menus.NewPopItem("Назад", "Вернуться в меню операций"),
@@ -182,4 +189,18 @@ func NewFilter(accounts []*domain.BankAccount, categories []*domain.Category) tu
 	)
 
 	return screen
+}
+
+func computeTotals(ctx tui.ScreenContext, operations []*domain.Operation) (appanalytics.Totals, error) {
+	cmdService := ctx.AnalyticsCommands()
+	if cmdService == nil {
+		return appanalytics.Totals{}, nil
+	}
+
+	cmd := cmdService.NetTotals(operations)
+	if cmd == nil {
+		return appanalytics.Totals{}, nil
+	}
+
+	return cmd.Execute(ctx.Context())
 }

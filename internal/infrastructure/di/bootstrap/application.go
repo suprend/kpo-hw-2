@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"fmt"
 
+	appanalytics "kpo-hw-2/internal/application/analytics"
 	appfacade "kpo-hw-2/internal/application/facade"
 	fileexport "kpo-hw-2/internal/application/files/export"
 	fileimport "kpo-hw-2/internal/application/files/import"
@@ -106,6 +107,12 @@ func registerApplication(container di.Container) error {
 		return fileimport.NewService(accountFacade, categoryFacade, operationFacade, importers), nil
 	}); err != nil {
 		return fmt.Errorf("bootstrap: register import service: %w", err)
+	}
+
+	if err := di.Register(container, func(di.Container) (appanalytics.Service, error) {
+		return appanalytics.NewService(), nil
+	}); err != nil {
+		return fmt.Errorf("bootstrap: register analytics service: %w", err)
 	}
 
 	return nil

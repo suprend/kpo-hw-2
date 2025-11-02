@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	appanalytics "kpo-hw-2/internal/application/analytics"
 	"kpo-hw-2/internal/domain"
 	"kpo-hw-2/internal/domain/query"
 	"kpo-hw-2/internal/tui"
@@ -11,7 +12,13 @@ import (
 )
 
 // NewList builds a read-only list of operations based on applied filter.
-func NewList(filter query.OperationFilter, operations []*domain.Operation, accounts []*domain.BankAccount, categories []*domain.Category) tui.Screen {
+func NewList(
+	filter query.OperationFilter,
+	operations []*domain.Operation,
+	accounts []*domain.BankAccount,
+	categories []*domain.Category,
+	totals appanalytics.Totals,
+) tui.Screen {
 	accountNames := make(map[domain.ID]string, len(accounts))
 	for _, acc := range accounts {
 		accountNames[acc.ID()] = acc.Name()
@@ -60,6 +67,10 @@ func NewList(filter query.OperationFilter, operations []*domain.Operation, accou
 	items = append(items, menus.NewPopItem("Назад", "Вернуться к фильтрам"))
 
 	intro := buildFilterIntro(filter, accountNames, categoryNames)
+	summary := buildTotalsSummary(totals)
+	if summary != "" {
+		intro = fmt.Sprintf("%s\n%s", intro, summary)
+	}
 
 	return menus.NewScreen(
 		"Список операций",
@@ -149,4 +160,13 @@ func buildFilterIntro(filter query.OperationFilter, accountNames map[domain.ID]s
 	}
 
 	return strings.Join(parts, " • ")
+}
+
+func buildTotalsSummary(totals appanalytics.Totals) string {
+	return fmt.Sprintf(
+		"Всего доходов: %d • Всего расходов: %d • Разница: %+d",
+		totals.Income,
+		totals.Expense,
+		totals.Delta,
+	)
 }

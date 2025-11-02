@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"time"
 
+	appanalytics "kpo-hw-2/internal/application/analytics"
 	"kpo-hw-2/internal/application/command"
 	accountcmd "kpo-hw-2/internal/application/command/account"
+	analyticscmd "kpo-hw-2/internal/application/command/analytics"
 	categorycmd "kpo-hw-2/internal/application/command/category"
 	"kpo-hw-2/internal/application/command/decorator"
 	exportcmd "kpo-hw-2/internal/application/command/export"
@@ -151,6 +153,28 @@ func registerCommands(container di.Container) error {
 		), nil
 	}); err != nil {
 		return fmt.Errorf("bootstrap: register import commands: %w", err)
+	}
+
+	if err := di.Register(container, func(c di.Container) (*analyticscmd.Service, error) {
+		service, err := di.Resolve[appanalytics.Service](c)
+		if err != nil {
+			return nil, err
+		}
+		logFn, err := di.Resolve[func(string, time.Duration, error)](c)
+		if err != nil {
+			return nil, err
+		}
+
+		timedTotals := decorator.Timed[appanalytics.Totals]{Log: logFn}
+
+		return analyticscmd.NewService(
+			service,
+			analyticscmd.Decorators{
+				NetTotals: []command.Decorator[appanalytics.Totals]{timedTotals},
+			},
+		), nil
+	}); err != nil {
+		return fmt.Errorf("bootstrap: register analytics commands: %w", err)
 	}
 
 	return nil
