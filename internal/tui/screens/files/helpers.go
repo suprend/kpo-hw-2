@@ -22,7 +22,9 @@ func loadImportFormatsWithOptions(ctx tui.ScreenContext) ([]appfiles.Format, []m
 	return loadFormats(ctx.ImportCommands().ListFormats(), ctx)
 }
 
-func loadFormats(cmd interface{ Execute(context.Context) ([]appfiles.Format, error) }, ctx tui.ScreenContext) ([]appfiles.Format, []menus.SelectOption, int) {
+func loadFormats(cmd interface {
+	Execute(context.Context) ([]appfiles.Format, error)
+}, ctx tui.ScreenContext) ([]appfiles.Format, []menus.SelectOption, int) {
 	formats, err := cmd.Execute(ctx.Context())
 	if err != nil || len(formats) == 0 {
 		return nil, nil, 0

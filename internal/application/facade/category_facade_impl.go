@@ -6,13 +6,11 @@ import (
 	"kpo-hw-2/internal/domain/repository"
 )
 
-// categoryFacade is the default CategoryFacade implementation.
 type categoryFacade struct {
 	factory    domainfactory.CategoryFactory
 	categories repository.CategoryRepository
 }
 
-// NewCategoryFacade creates a facade over category operations.
 func NewCategoryFacade(categoryFactory domainfactory.CategoryFactory, repo repository.CategoryRepository) CategoryFacade {
 	return &categoryFacade{
 		factory:    categoryFactory,
@@ -22,6 +20,19 @@ func NewCategoryFacade(categoryFactory domainfactory.CategoryFactory, repo repos
 
 func (f *categoryFacade) CreateCategory(name string, typ domain.OperationType) (*domain.Category, error) {
 	category, err := f.factory.Create(name, typ)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := f.categories.Create(category); err != nil {
+		return nil, err
+	}
+
+	return category, nil
+}
+
+func (f *categoryFacade) CreateCategoryWithID(id domain.ID, name string, typ domain.OperationType) (*domain.Category, error) {
+	category, err := f.factory.Rebuild(id, name, typ)
 	if err != nil {
 		return nil, err
 	}

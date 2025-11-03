@@ -5,7 +5,6 @@ import (
 	"kpo-hw-2/internal/tui/menus"
 )
 
-// NewMenu returns main accounts management menu.
 func NewMenu() tui.Screen {
 	items := []menus.MenuItem{
 		menus.NewActionItem(

@@ -8,7 +8,6 @@ import (
 	"kpo-hw-2/internal/domain"
 )
 
-// Decorators groups optional decorators for category commands.
 type Decorators struct {
 	Create []command.Decorator[*domain.Category]
 	Update []command.Decorator[*domain.Category]
@@ -17,13 +16,11 @@ type Decorators struct {
 	Get    []command.Decorator[*domain.Category]
 }
 
-// Service constructs commands backed by CategoryFacade.
 type Service struct {
 	facade     facade.CategoryFacade
 	decorators Decorators
 }
 
-// NewService wires the facade and decorators for produced commands.
 func NewService(f facade.CategoryFacade, decorators Decorators) *Service {
 	return &Service{
 		facade:     f,
@@ -31,7 +28,6 @@ func NewService(f facade.CategoryFacade, decorators Decorators) *Service {
 	}
 }
 
-// Create builds a command for category creation.
 func (s *Service) Create(name string, typ domain.OperationType) command.Command[*domain.Category] {
 	base := command.Func[*domain.Category]{
 		ExecFn: func(_ context.Context) (*domain.Category, error) {
@@ -42,7 +38,6 @@ func (s *Service) Create(name string, typ domain.OperationType) command.Command[
 	return command.Wrap(base, s.decorators.Create...)
 }
 
-// Update builds a command for category update.
 func (s *Service) Update(id domain.ID, name string, typ domain.OperationType) command.Command[*domain.Category] {
 	base := command.Func[*domain.Category]{
 		ExecFn: func(_ context.Context) (*domain.Category, error) {
@@ -53,7 +48,6 @@ func (s *Service) Update(id domain.ID, name string, typ domain.OperationType) co
 	return command.Wrap(base, s.decorators.Update...)
 }
 
-// Delete builds a command for category deletion.
 func (s *Service) Delete(id domain.ID) command.Command[command.NoResult] {
 	base := command.Func[command.NoResult]{
 		ExecFn: func(_ context.Context) (command.NoResult, error) {
@@ -65,7 +59,6 @@ func (s *Service) Delete(id domain.ID) command.Command[command.NoResult] {
 	return command.Wrap(base, s.decorators.Delete...)
 }
 
-// List builds a command that lists categories filtered by type.
 func (s *Service) List(typ domain.OperationType) command.Command[[]*domain.Category] {
 	base := command.Func[[]*domain.Category]{
 		ExecFn: func(_ context.Context) ([]*domain.Category, error) {
@@ -76,7 +69,6 @@ func (s *Service) List(typ domain.OperationType) command.Command[[]*domain.Categ
 	return command.Wrap(base, s.decorators.List...)
 }
 
-// Get builds a command that fetches a category by ID.
 func (s *Service) Get(id domain.ID) command.Command[*domain.Category] {
 	base := command.Func[*domain.Category]{
 		ExecFn: func(_ context.Context) (*domain.Category, error) {

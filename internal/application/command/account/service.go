@@ -8,7 +8,6 @@ import (
 	"kpo-hw-2/internal/domain"
 )
 
-// Decorators groups optional decorators for different account commands.
 type Decorators struct {
 	Create []command.Decorator[*domain.BankAccount]
 	Update []command.Decorator[*domain.BankAccount]
@@ -17,13 +16,11 @@ type Decorators struct {
 	Get    []command.Decorator[*domain.BankAccount]
 }
 
-// Service constructs commands that delegate to AccountFacade use-cases.
 type Service struct {
 	facade     facade.AccountFacade
 	decorators Decorators
 }
 
-// NewService wires the facade and decorators used for produced commands.
 func NewService(f facade.AccountFacade, decorators Decorators) *Service {
 	return &Service{
 		facade:     f,
@@ -31,7 +28,6 @@ func NewService(f facade.AccountFacade, decorators Decorators) *Service {
 	}
 }
 
-// Create builds a command that creates a bank account.
 func (s *Service) Create(name string) command.Command[*domain.BankAccount] {
 	base := command.Func[*domain.BankAccount]{
 		ExecFn: func(_ context.Context) (*domain.BankAccount, error) {
@@ -42,7 +38,6 @@ func (s *Service) Create(name string) command.Command[*domain.BankAccount] {
 	return command.Wrap(base, s.decorators.Create...)
 }
 
-// Update builds a command that updates a bank account.
 func (s *Service) Update(
 	id domain.ID,
 	name string,
@@ -57,7 +52,6 @@ func (s *Service) Update(
 	return command.Wrap(base, s.decorators.Update...)
 }
 
-// Delete builds a command that removes a bank account.
 func (s *Service) Delete(id domain.ID) command.Command[command.NoResult] {
 	base := command.Func[command.NoResult]{
 		ExecFn: func(_ context.Context) (command.NoResult, error) {
@@ -69,7 +63,6 @@ func (s *Service) Delete(id domain.ID) command.Command[command.NoResult] {
 	return command.Wrap(base, s.decorators.Delete...)
 }
 
-// List builds a command that lists all bank accounts.
 func (s *Service) List() command.Command[[]*domain.BankAccount] {
 	base := command.Func[[]*domain.BankAccount]{
 		ExecFn: func(_ context.Context) ([]*domain.BankAccount, error) {
@@ -80,7 +73,6 @@ func (s *Service) List() command.Command[[]*domain.BankAccount] {
 	return command.Wrap(base, s.decorators.List...)
 }
 
-// Get builds a command that fetches a single bank account.
 func (s *Service) Get(id domain.ID) command.Command[*domain.BankAccount] {
 	base := command.Func[*domain.BankAccount]{
 		ExecFn: func(_ context.Context) (*domain.BankAccount, error) {

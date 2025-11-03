@@ -14,7 +14,6 @@ const (
 	fieldEditCategoryType = "edit_category_type"
 )
 
-// NewEdit constructs screen for editing an existing category.
 func NewEdit(category *domain.Category) tui.Screen {
 	var screen *menus.Screen
 

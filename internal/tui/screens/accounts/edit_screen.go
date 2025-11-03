@@ -16,7 +16,6 @@ const (
 	fieldEditBalance = "edit_balance"
 )
 
-// NewEdit constructs screen for editing existing bank account.
 func NewEdit(account *domain.BankAccount) tui.Screen {
 	var screen *menus.Screen
 

@@ -11,7 +11,6 @@ import (
 	operationcmd "kpo-hw-2/internal/application/command/operation"
 )
 
-// ScreenContext exposes dependencies available to screens.
 type ScreenContext interface {
 	Context() context.Context
 

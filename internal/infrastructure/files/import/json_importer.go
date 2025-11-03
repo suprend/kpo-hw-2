@@ -8,15 +8,12 @@ import (
 	filesmodel "kpo-hw-2/internal/files/model"
 )
 
-// JSONImporter парсит данные из JSON, экспортированного приложением.
 type JSONImporter struct{}
 
-// NewJSONImporter создает экземпляр JSON импортера.
 func NewJSONImporter() *JSONImporter {
 	return &JSONImporter{}
 }
 
-// Format описывает поддерживаемый формат.
 func (i *JSONImporter) Format() appfiles.Format {
 	return appfiles.Format{
 		Key:         "json",
@@ -26,7 +23,6 @@ func (i *JSONImporter) Format() appfiles.Format {
 	}
 }
 
-// Parse преобразует сырые данные в транспортную структуру.
 func (i *JSONImporter) Parse(data []byte) (filesmodel.Payload, error) {
 	if len(data) == 0 {
 		return filesmodel.Payload{}, nil

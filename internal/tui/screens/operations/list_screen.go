@@ -11,7 +11,6 @@ import (
 	"kpo-hw-2/internal/tui/menus"
 )
 
-// NewList builds a read-only list of operations based on applied filter.
 func NewList(
 	filter query.OperationFilter,
 	operations []*domain.Operation,
@@ -59,7 +58,7 @@ func NewList(
 					return tui.Result{}
 				}
 
-				return tui.Result{Push: NewEdit(operation, accounts, categories)}
+				return tui.Result{Replace: NewEdit(operation, accounts, categories)}
 			},
 		))
 	}

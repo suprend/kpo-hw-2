@@ -9,7 +9,6 @@ import (
 	"kpo-hw-2/internal/tui/styles"
 )
 
-// actionItem represents simple action triggered by "enter".
 type actionItem struct {
 	key         string
 	title       string

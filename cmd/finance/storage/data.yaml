@@ -1,58 +1,52 @@
 accounts:
-  - id: 01K92J5WAFVPXH982FBTFQRTQK
+  - id: 01K954YGWPEWXTBB9V9NJZSRCG
     name: втб
-    balance: 0
-  - id: 01K92J5WAF7JYQDJCZNS914VKZ
+    balance: 551
+  - id: 01K954YKNKNGE1QF4WDCCB3QXX
     name: сбер
-    balance: 720001
-  - id: 01K92J5WAFK3R42GKJS90FPXBR
+    balance: 0
+  - id: 01K954YQ7GAYQZY14Q4HPDSZGF
     name: тбанк
-    balance: 4100
+    balance: 42000
 categories:
-  - id: 01K92J5WAFNVYJ6MJY6MS5K4VH
+  - id: 01K95504XQXXBJKZYJHYM29WHV
     type: expense
-    name: еда
-  - id: 01K92J5WAFYSAZ0BW0B4SPZ3Z7
+    name: продукты
+  - id: 01K9551A3YSHFYX478PK8K03RB
     type: expense
-    name: развлечения
-  - id: 01K92J5WAF7MHK7SPPZ6ZZ075W
-    type: expense
-    name: техника
-  - id: 01K92J5WAFYZFAMWCQZB8RCED6
+    name: такси
+  - id: 01K955087K63N5Z8PMFH09XJ72
     type: income
     name: зарплата
-  - id: 01K92J5WAFBNAZ0APA48SER7KZ
+  - id: 01K9551SRGB0RBDTKZGHEPF0DG
     type: income
-    name: репетиторство
-  - id: 01K92J5WAFJ4CRN8FS5KS6EDD5
-    type: income
-    name: такси
+    name: подработка
 operations:
-  - id: 01K92J5WAFZMBNBB01N6A8DC4H
+  - id: 01K9552QDS462BF32635Y93BKQ
     type: income
-    bankaccountid: 01K92J5WAFK3R42GKJS90FPXBR
-    categoryid: 01K92J5WAFYZFAMWCQZB8RCED6
-    amount: 2000
-    date: 2025-11-01T00:00:00Z
+    bankaccountid: 01K954YQ7GAYQZY14Q4HPDSZGF
+    categoryid: 01K955087K63N5Z8PMFH09XJ72
+    amount: 20000
+    date: 2025-10-03T00:00:00Z
     description: яндекс
-  - id: 01K92J7Q2CSJTVR4EM5EDHDG0X
+  - id: 01K9559TKNFGC3H1X58ZY0QS9R
     type: expense
-    bankaccountid: 01K92J5WAF7JYQDJCZNS914VKZ
-    categoryid: 01K92J5WAFNVYJ6MJY6MS5K4VH
-    amount: 90000
-    date: 2025-11-02T00:00:00Z
-    description: кола и чипсы
-  - id: 01K92J8GE29R2XD3934ZVSCPKM
-    type: expense
-    bankaccountid: 01K92J5WAF7JYQDJCZNS914VKZ
-    categoryid: 01K92J5WAF7MHK7SPPZ6ZZ075W
-    amount: 189999
-    date: 2025-11-02T00:00:00Z
-    description: макбук м6
-  - id: 01K92J5WAF27R60HX5E1R2B0ZW
+    bankaccountid: 01K954YGWPEWXTBB9V9NJZSRCG
+    categoryid: 01K95504XQXXBJKZYJHYM29WHV
+    amount: 199
+    date: 2025-10-13T00:00:00Z
+    description: помидоры
+  - id: 01K955397DYA2MCVW7EFZ8QYMX
     type: income
-    bankaccountid: 01K92J5WAFK3R42GKJS90FPXBR
-    categoryid: 01K92J5WAFYZFAMWCQZB8RCED6
-    amount: 2100
-    date: 2025-12-01T00:00:00Z
+    bankaccountid: 01K954YQ7GAYQZY14Q4HPDSZGF
+    categoryid: 01K955087K63N5Z8PMFH09XJ72
+    amount: 22000
+    date: 2025-11-03T00:00:00Z
     description: яндекс
+  - id: 01K9554HHV25548NYBRVDDA452
+    type: expense
+    bankaccountid: 01K954YGWPEWXTBB9V9NJZSRCG
+    categoryid: 01K9551A3YSHFYX478PK8K03RB
+    amount: 500
+    date: 2025-11-03T00:00:00Z
+    description: uber

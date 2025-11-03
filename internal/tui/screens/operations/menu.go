@@ -8,7 +8,6 @@ import (
 	"kpo-hw-2/internal/tui/menus"
 )
 
-// NewMenu constructs placeholder screen for operations management.
 func NewMenu() tui.Screen {
 	items := []menus.MenuItem{
 		menus.NewActionItem("list", "Список операций", "Просмотреть операции с фильтрами.", func(ctx tui.ScreenContext, _ menus.Values) tui.Result {

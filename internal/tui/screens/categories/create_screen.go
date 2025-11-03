@@ -13,7 +13,6 @@ const (
 	fieldCategoryType = "category_type"
 )
 
-// NewCreate constructs screen for creating a category.
 func NewCreate() tui.Screen {
 	var screen *menus.Screen
 

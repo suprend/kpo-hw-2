@@ -10,7 +10,6 @@ import (
 	"kpo-hw-2/internal/domain/query"
 )
 
-// Decorators groups optional decorators for operation commands.
 type Decorators struct {
 	Create []command.Decorator[*domain.Operation]
 	Update []command.Decorator[*domain.Operation]
@@ -19,13 +18,11 @@ type Decorators struct {
 	Get    []command.Decorator[*domain.Operation]
 }
 
-// Service constructs commands backed by OperationFacade.
 type Service struct {
 	facade     facade.OperationFacade
 	decorators Decorators
 }
 
-// NewService wires the facade and decorators for produced commands.
 func NewService(f facade.OperationFacade, decorators Decorators) *Service {
 	return &Service{
 		facade:     f,
@@ -33,7 +30,6 @@ func NewService(f facade.OperationFacade, decorators Decorators) *Service {
 	}
 }
 
-// Create builds a command that creates a financial operation.
 func (s *Service) Create(
 	typ domain.OperationType,
 	accountID domain.ID,
@@ -58,7 +54,6 @@ func (s *Service) Create(
 	return command.Wrap(base, s.decorators.Create...)
 }
 
-// Update builds a command that updates an operation.
 func (s *Service) Update(
 	id domain.ID,
 	typ domain.OperationType,
@@ -85,7 +80,6 @@ func (s *Service) Update(
 	return command.Wrap(base, s.decorators.Update...)
 }
 
-// Delete builds a command that removes an operation.
 func (s *Service) Delete(id domain.ID) command.Command[command.NoResult] {
 	base := command.Func[command.NoResult]{
 		ExecFn: func(_ context.Context) (command.NoResult, error) {
@@ -97,7 +91,6 @@ func (s *Service) Delete(id domain.ID) command.Command[command.NoResult] {
 	return command.Wrap(base, s.decorators.Delete...)
 }
 
-// List builds a command that lists operations using a filter.
 func (s *Service) List(filter query.OperationFilter) command.Command[[]*domain.Operation] {
 	base := command.Func[[]*domain.Operation]{
 		ExecFn: func(_ context.Context) ([]*domain.Operation, error) {
@@ -108,7 +101,6 @@ func (s *Service) List(filter query.OperationFilter) command.Command[[]*domain.O
 	return command.Wrap(base, s.decorators.List...)
 }
 
-// Get builds a command that fetches an operation by ID.
 func (s *Service) Get(id domain.ID) command.Command[*domain.Operation] {
 	base := command.Func[*domain.Operation]{
 		ExecFn: func(_ context.Context) (*domain.Operation, error) {

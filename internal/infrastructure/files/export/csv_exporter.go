@@ -12,15 +12,12 @@ import (
 	filesmodel "kpo-hw-2/internal/files/model"
 )
 
-// CSVExporter produces visitors that render domain entities into CSV.
 type CSVExporter struct{}
 
-// NewCSVExporter constructs exporter instance.
 func NewCSVExporter() *CSVExporter {
 	return &CSVExporter{}
 }
 
-// Format returns metadata describing CSV export.
 func (e *CSVExporter) Format() appfiles.Format {
 	return appfiles.Format{
 		Key:         "csv",
@@ -30,14 +27,12 @@ func (e *CSVExporter) Format() appfiles.Format {
 	}
 }
 
-// NewVisitor constructs visitor bound to provided writer.
 func (e *CSVExporter) NewVisitor(writer io.Writer) (fileexport.Visitor, error) {
 	return &csvVisitor{
 		writer: csv.NewWriter(writer),
 	}, nil
 }
 
-// compile-time check
 var _ fileexport.Exporter = (*CSVExporter)(nil)
 
 type csvVisitor struct {
@@ -165,5 +160,4 @@ func (v *csvVisitor) Finalize() error {
 	return v.writer.Error()
 }
 
-// compile-time check
 var _ fileexport.Visitor = (*csvVisitor)(nil)

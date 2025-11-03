@@ -18,7 +18,6 @@ var (
 	ErrInvalidPath   = errors.New("export: invalid destination path")
 )
 
-// Service orchestrates exporting aggregates using registered exporters.
 type Service struct {
 	accounts   repository.AccountRepository
 	categories repository.CategoryRepository
@@ -28,7 +27,6 @@ type Service struct {
 	order     []files.Format
 }
 
-// NewService wires repository dependencies and registers exporters.
 func NewService(
 	accountRepo repository.AccountRepository,
 	categoryRepo repository.CategoryRepository,
@@ -62,14 +60,12 @@ func NewService(
 	}
 }
 
-// Formats returns registered formats in deterministic order.
 func (s *Service) Formats() []files.Format {
 	out := make([]files.Format, len(s.order))
 	copy(out, s.order)
 	return out
 }
 
-// FormatFor returns format metadata for requested key.
 func (s *Service) FormatFor(key string) (files.Format, bool) {
 	exp, ok := s.exporters[key]
 	if !ok {
@@ -78,7 +74,6 @@ func (s *Service) FormatFor(key string) (files.Format, bool) {
 	return exp.Format(), true
 }
 
-// Export serializes aggregates into provided writer using selected format.
 func (s *Service) Export(formatKey string, writer io.Writer) error {
 	if writer == nil {
 		return ErrInvalidWriter
@@ -107,7 +102,6 @@ func (s *Service) Export(formatKey string, writer io.Writer) error {
 	return visitor.Finalize()
 }
 
-// ExportToPath ensures destination exists, creates file and exports into it.
 func (s *Service) ExportToPath(formatKey, path string) (err error) {
 	if strings.TrimSpace(path) == "" {
 		return ErrInvalidPath

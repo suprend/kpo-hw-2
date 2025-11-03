@@ -1,89 +1,79 @@
 {
   "accounts": [
     {
-      "ID": "01K92J5WAFVPXH982FBTFQRTQK",
+      "ID": "01K954YGWPEWXTBB9V9NJZSRCG",
       "Name": "втб",
+      "Balance": 551
+    },
+    {
+      "ID": "01K954YKNKNGE1QF4WDCCB3QXX",
+      "Name": "сбер",
       "Balance": 0
     },
     {
-      "ID": "01K92J5WAF7JYQDJCZNS914VKZ",
-      "Name": "сбер",
-      "Balance": 720001
-    },
-    {
-      "ID": "01K92J5WAFK3R42GKJS90FPXBR",
+      "ID": "01K954YQ7GAYQZY14Q4HPDSZGF",
       "Name": "тбанк",
-      "Balance": 4100
+      "Balance": 42000
     }
   ],
   "categories": [
     {
-      "ID": "01K92J5WAFNVYJ6MJY6MS5K4VH",
+      "ID": "01K95504XQXXBJKZYJHYM29WHV",
       "Type": "expense",
-      "Name": "еда"
+      "Name": "продукты"
     },
     {
-      "ID": "01K92J5WAFYSAZ0BW0B4SPZ3Z7",
+      "ID": "01K9551A3YSHFYX478PK8K03RB",
       "Type": "expense",
-      "Name": "развлечения"
+      "Name": "такси"
     },
     {
-      "ID": "01K92J5WAF7MHK7SPPZ6ZZ075W",
-      "Type": "expense",
-      "Name": "техника"
-    },
-    {
-      "ID": "01K92J5WAFYZFAMWCQZB8RCED6",
+      "ID": "01K955087K63N5Z8PMFH09XJ72",
       "Type": "income",
       "Name": "зарплата"
     },
     {
-      "ID": "01K92J5WAFBNAZ0APA48SER7KZ",
+      "ID": "01K9551SRGB0RBDTKZGHEPF0DG",
       "Type": "income",
-      "Name": "репетиторство"
-    },
-    {
-      "ID": "01K92J5WAFJ4CRN8FS5KS6EDD5",
-      "Type": "income",
-      "Name": "такси"
+      "Name": "подработка"
     }
   ],
   "operations": [
     {
-      "ID": "01K92J5WAFZMBNBB01N6A8DC4H",
+      "ID": "01K9552QDS462BF32635Y93BKQ",
       "Type": "income",
-      "BankAccountID": "01K92J5WAFK3R42GKJS90FPXBR",
-      "CategoryID": "01K92J5WAFYZFAMWCQZB8RCED6",
-      "Amount": 2000,
-      "Date": "2025-11-01T00:00:00Z",
+      "BankAccountID": "01K954YQ7GAYQZY14Q4HPDSZGF",
+      "CategoryID": "01K955087K63N5Z8PMFH09XJ72",
+      "Amount": 20000,
+      "Date": "2025-10-03T00:00:00Z",
       "Description": "яндекс"
     },
     {
-      "ID": "01K92J7Q2CSJTVR4EM5EDHDG0X",
+      "ID": "01K9559TKNFGC3H1X58ZY0QS9R",
       "Type": "expense",
-      "BankAccountID": "01K92J5WAF7JYQDJCZNS914VKZ",
-      "CategoryID": "01K92J5WAFNVYJ6MJY6MS5K4VH",
-      "Amount": 90000,
-      "Date": "2025-11-02T00:00:00Z",
-      "Description": "кола и чипсы"
+      "BankAccountID": "01K954YGWPEWXTBB9V9NJZSRCG",
+      "CategoryID": "01K95504XQXXBJKZYJHYM29WHV",
+      "Amount": 199,
+      "Date": "2025-10-13T00:00:00Z",
+      "Description": "помидоры"
     },
     {
-      "ID": "01K92J8GE29R2XD3934ZVSCPKM",
-      "Type": "expense",
-      "BankAccountID": "01K92J5WAF7JYQDJCZNS914VKZ",
-      "CategoryID": "01K92J5WAF7MHK7SPPZ6ZZ075W",
-      "Amount": 189999,
-      "Date": "2025-11-02T00:00:00Z",
-      "Description": "макбук м6"
-    },
-    {
-      "ID": "01K92J5WAF27R60HX5E1R2B0ZW",
+      "ID": "01K955397DYA2MCVW7EFZ8QYMX",
       "Type": "income",
-      "BankAccountID": "01K92J5WAFK3R42GKJS90FPXBR",
-      "CategoryID": "01K92J5WAFYZFAMWCQZB8RCED6",
-      "Amount": 2100,
-      "Date": "2025-12-01T00:00:00Z",
+      "BankAccountID": "01K954YQ7GAYQZY14Q4HPDSZGF",
+      "CategoryID": "01K955087K63N5Z8PMFH09XJ72",
+      "Amount": 22000,
+      "Date": "2025-11-03T00:00:00Z",
       "Description": "яндекс"
+    },
+    {
+      "ID": "01K9554HHV25548NYBRVDDA452",
+      "Type": "expense",
+      "BankAccountID": "01K954YGWPEWXTBB9V9NJZSRCG",
+      "CategoryID": "01K9551A3YSHFYX478PK8K03RB",
+      "Amount": 500,
+      "Date": "2025-11-03T00:00:00Z",
+      "Description": "uber"
     }
   ]
 }

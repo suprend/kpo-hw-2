@@ -2,14 +2,12 @@ package domain
 
 import "strings"
 
-// BankAccount represents a financial account in the domain.
 type BankAccount struct {
 	id      ID
 	name    string
 	balance int64
 }
 
-// NewBankAccount validates and constructs a bank account aggregate.
 func NewBankAccount(id ID, name string, balance int64) (*BankAccount, error) {
 	if id == "" {
 		return nil, ErrInvalidBankAccount
@@ -20,6 +18,10 @@ func NewBankAccount(id ID, name string, balance int64) (*BankAccount, error) {
 		return nil, ErrInvalidBankAccount
 	}
 
+	if balance < 0 {
+		return nil, ErrInvalidBankAccount
+	}
+
 	return &BankAccount{
 		id:      id,
 		name:    name,
@@ -27,16 +29,12 @@ func NewBankAccount(id ID, name string, balance int64) (*BankAccount, error) {
 	}, nil
 }
 
-// ID returns the account identifier.
 func (b *BankAccount) ID() ID { return b.id }
 
-// Name returns the account name.
 func (b *BankAccount) Name() string { return b.name }
 
-// Balance returns the current balance.
 func (b *BankAccount) Balance() int64 { return b.balance }
 
-// ApplyOperation mutates account balance according to provided operation.
 func (b *BankAccount) ApplyOperation(operation *Operation) error {
 	if operation == nil {
 		return ErrInvalidOperation
@@ -58,7 +56,6 @@ func (b *BankAccount) ApplyOperation(operation *Operation) error {
 	}
 }
 
-// RevertOperation rolls back balance change caused by provided operation.
 func (b *BankAccount) RevertOperation(operation *Operation) error {
 	if operation == nil {
 		return ErrInvalidOperation

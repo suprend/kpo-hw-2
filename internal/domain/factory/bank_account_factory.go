@@ -2,13 +2,11 @@ package factory
 
 import "kpo-hw-2/internal/domain"
 
-// BankAccountFactory creates and rebuilds bank account aggregates.
 type BankAccountFactory interface {
 	Create(name string, balance int64) (*domain.BankAccount, error)
 	Rebuild(id domain.ID, name string, balance int64) (*domain.BankAccount, error)
 }
 
-// NewBankAccountFactory constructs factory backed by ID generator.
 func NewBankAccountFactory(idGenerator domain.IDGenerator) BankAccountFactory {
 	return &bankAccountFactory{idGenerator: idGenerator}
 }

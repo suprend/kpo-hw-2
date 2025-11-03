@@ -11,7 +11,6 @@ const (
 	fieldAccountName = "account_name"
 )
 
-// NewCreate constructs screen for creating a bank account.
 func NewCreate() tui.Screen {
 	var screen *menus.Screen
 

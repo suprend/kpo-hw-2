@@ -10,7 +10,6 @@ import (
 	"kpo-hw-2/internal/tui/styles"
 )
 
-// inputItem wraps text input model with validation and error state.
 type inputItem struct {
 	key         string
 	title       string

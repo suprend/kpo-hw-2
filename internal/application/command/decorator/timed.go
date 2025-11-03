@@ -8,13 +8,11 @@ import (
 	"kpo-hw-2/internal/application/command"
 )
 
-// Timed decorates commands, measuring execution time and logging it.
 type Timed[T any] struct {
 	Log   func(name string, duration time.Duration, err error)
 	Clock func() time.Time
 }
 
-// Wrap implements command.Decorator.
 func (d Timed[T]) Wrap(inner command.Command[T]) command.Command[T] {
 	if inner == nil {
 		return nil

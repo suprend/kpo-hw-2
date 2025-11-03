@@ -10,15 +10,12 @@ import (
 	filesmodel "kpo-hw-2/internal/files/model"
 )
 
-// JSONExporter produces visitors that render domain entities into JSON.
 type JSONExporter struct{}
 
-// NewJSONExporter constructs exporter instance.
 func NewJSONExporter() *JSONExporter {
 	return &JSONExporter{}
 }
 
-// Format returns metadata describing JSON export.
 func (e *JSONExporter) Format() appfiles.Format {
 	return appfiles.Format{
 		Key:         "json",
@@ -28,14 +25,12 @@ func (e *JSONExporter) Format() appfiles.Format {
 	}
 }
 
-// NewVisitor constructs visitor bound to provided writer.
 func (e *JSONExporter) NewVisitor(writer io.Writer) (fileexport.Visitor, error) {
 	return &jsonVisitor{
 		writer: writer,
 	}, nil
 }
 
-// compile-time check
 var _ fileexport.Exporter = (*JSONExporter)(nil)
 
 type jsonVisitor struct {
@@ -99,5 +94,4 @@ func (v *jsonVisitor) Finalize() error {
 	return encoder.Encode(payload)
 }
 
-// compile-time check
 var _ fileexport.Visitor = (*jsonVisitor)(nil)

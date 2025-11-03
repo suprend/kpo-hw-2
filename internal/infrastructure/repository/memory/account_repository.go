@@ -9,13 +9,11 @@ import (
 	"kpo-hw-2/internal/domain/repository"
 )
 
-// accountRepository provides in-memory storage for bank accounts.
 type accountRepository struct {
 	mu       sync.RWMutex
 	accounts map[domain.ID]*domain.BankAccount
 }
 
-// NewAccountRepository constructs an in-memory AccountRepository implementation.
 func NewAccountRepository() repository.AccountRepository {
 	return &accountRepository{
 		accounts: make(map[domain.ID]*domain.BankAccount),

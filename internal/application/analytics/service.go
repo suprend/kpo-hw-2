@@ -6,21 +6,18 @@ import (
 	"kpo-hw-2/internal/domain"
 )
 
-// Totals объединяет итоговые показатели по операциям.
 type Totals struct {
 	Income  int64
 	Expense int64
 	Delta   int64
 }
 
-// Service описывает минимальный набор аналитики.
 type Service interface {
 	NetTotals(operations []*domain.Operation) (Totals, error)
 }
 
 type service struct{}
 
-// NewService возвращает готовую реализацию Service.
 func NewService() Service {
 	return service{}
 }

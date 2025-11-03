@@ -2,13 +2,11 @@ package factory
 
 import "kpo-hw-2/internal/domain"
 
-// CategoryFactory creates and rebuilds category aggregates.
 type CategoryFactory interface {
 	Create(name string, typ domain.OperationType) (*domain.Category, error)
 	Rebuild(id domain.ID, name string, typ domain.OperationType) (*domain.Category, error)
 }
 
-// NewCategoryFactory constructs factory backed by ID generator.
 func NewCategoryFactory(idGenerator domain.IDGenerator) CategoryFactory {
 	return &categoryFactory{idGenerator: idGenerator}
 }

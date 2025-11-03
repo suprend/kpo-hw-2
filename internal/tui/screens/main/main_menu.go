@@ -9,7 +9,6 @@ import (
 	operationsmenu "kpo-hw-2/internal/tui/screens/operations"
 )
 
-// New constructs root main menu screen.
 func New() tui.Screen {
 	var screen *menus.Screen
 

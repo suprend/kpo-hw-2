@@ -2,10 +2,8 @@ package domain
 
 import "strings"
 
-// ID is a strongly-typed identifier for domain entities.
 type ID string
 
-// ParseID validates ULID format and returns typed identifier.
 func ParseID(value string) (ID, error) {
 	if value == "" {
 		return "", ErrInvalidID
@@ -30,18 +28,15 @@ func ParseID(value string) (ID, error) {
 	return ID(value), nil
 }
 
-// String renders identifier as plain string.
 func (id ID) String() string {
 	return string(id)
 }
 
-// IDGenerator produces unique identifiers compatible with domain expectations.
 type IDGenerator interface {
 	NewID() (ID, error)
 }
 
 const (
-	// ULIDAlphabet defines allowed characters for ULID identifiers.
 	ULIDAlphabet = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 	zeroULID     = "00000000000000000000000000"
 )

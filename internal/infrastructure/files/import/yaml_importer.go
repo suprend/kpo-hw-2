@@ -8,15 +8,12 @@ import (
 	filesmodel "kpo-hw-2/internal/files/model"
 )
 
-// YAMLImporter парсит данные из YAML, экспортированного приложением.
 type YAMLImporter struct{}
 
-// NewYAMLImporter создает экземпляр YAML импортера.
 func NewYAMLImporter() *YAMLImporter {
 	return &YAMLImporter{}
 }
 
-// Format описывает поддерживаемый формат.
 func (i *YAMLImporter) Format() appfiles.Format {
 	return appfiles.Format{
 		Key:         "yaml",
@@ -26,7 +23,6 @@ func (i *YAMLImporter) Format() appfiles.Format {
 	}
 }
 
-// Parse преобразует сырые данные в транспортную структуру.
 func (i *YAMLImporter) Parse(data []byte) (filesmodel.Payload, error) {
 	if len(data) == 0 {
 		return filesmodel.Payload{}, nil

@@ -9,7 +9,6 @@ import (
 	"kpo-hw-2/internal/tui/styles"
 )
 
-// selectItem manages option selection with expandable list.
 type selectItem struct {
 	key         string
 	title       string

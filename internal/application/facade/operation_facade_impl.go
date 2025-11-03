@@ -9,7 +9,6 @@ import (
 	"kpo-hw-2/internal/domain/repository"
 )
 
-// operationFacade is the default OperationFacade implementation.
 type operationFacade struct {
 	factory    domainfactory.OperationFactory
 	operations repository.OperationRepository
@@ -17,7 +16,6 @@ type operationFacade struct {
 	categories repository.CategoryRepository
 }
 
-// NewOperationFacade wires dependencies for operation workflows.
 func NewOperationFacade(
 	operationFactory domainfactory.OperationFactory,
 	operationRepo repository.OperationRepository,
@@ -57,6 +55,33 @@ func (f *operationFacade) CreateOperation(
 
 	if err := f.operations.Create(context.operation); err != nil {
 		_ = f.revertBalanceWithAccount(context.account, context.operation)
+		return nil, err
+	}
+
+	return context.operation, nil
+}
+
+func (f *operationFacade) CreateOperationWithoutBalance(
+	id domain.ID,
+	typ domain.OperationType,
+	accountID domain.ID,
+	categoryID domain.ID,
+	amount int64,
+	date time.Time,
+	description string,
+) (*domain.Operation, error) {
+	context, err := f.buildOperationContext(
+		func() (*domain.Operation, error) {
+			return f.factory.Rebuild(id, typ, accountID, categoryID, amount, date, description)
+		},
+		accountID,
+		categoryID,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := f.operations.Create(context.operation); err != nil {
 		return nil, err
 	}
 

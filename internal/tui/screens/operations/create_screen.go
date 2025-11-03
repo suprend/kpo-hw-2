@@ -20,7 +20,6 @@ const (
 	fieldOperationType     = "operation_type"
 )
 
-// NewCreate constructs screen for creating a financial operation.
 func NewCreate(accounts []*domain.BankAccount, categories []*domain.Category) tui.Screen {
 	var screen *menus.Screen
 

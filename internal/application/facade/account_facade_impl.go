@@ -6,13 +6,11 @@ import (
 	"kpo-hw-2/internal/domain/repository"
 )
 
-// accountFacade is the default AccountFacade implementation.
 type accountFacade struct {
 	factory  domainfactory.BankAccountFactory
 	accounts repository.AccountRepository
 }
 
-// NewAccountFacade wires dependencies for account use-cases.
 func NewAccountFacade(
 	accountFactory domainfactory.BankAccountFactory,
 	accountRepo repository.AccountRepository,
@@ -25,6 +23,19 @@ func NewAccountFacade(
 
 func (f *accountFacade) CreateAccount(name string) (*domain.BankAccount, error) {
 	account, err := f.factory.Create(name, 0)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := f.accounts.Create(account); err != nil {
+		return nil, err
+	}
+
+	return account, nil
+}
+
+func (f *accountFacade) CreateAccountWithID(id domain.ID, name string, balance int64) (*domain.BankAccount, error) {
+	account, err := f.factory.Rebuild(id, name, balance)
 	if err != nil {
 		return nil, err
 	}
@@ -69,5 +80,4 @@ func (f *accountFacade) GetAccount(id domain.ID) (*domain.BankAccount, error) {
 	return f.accounts.Get(id)
 }
 
-// compile-time check
 var _ AccountFacade = (*accountFacade)(nil)

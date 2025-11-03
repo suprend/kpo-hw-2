@@ -17,12 +17,10 @@ import (
 	"kpo-hw-2/internal/tui"
 )
 
-// App bundles top-level objects produced by the bootstrap process.
 type App struct {
 	Model *tui.Model
 }
 
-// Build wires application layers using the DI container and returns a ready-to-run UI model.
 func Build(
 	ctx context.Context,
 	logFn func(string, time.Duration, error),

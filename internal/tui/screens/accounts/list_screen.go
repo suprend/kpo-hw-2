@@ -8,7 +8,6 @@ import (
 	"kpo-hw-2/internal/tui/menus"
 )
 
-// NewList builds a simple screen where each account rendered as idle menu item.
 func NewList(accounts []*domain.BankAccount) tui.Screen {
 	items := make([]menus.MenuItem, 0, len(accounts)+1)
 

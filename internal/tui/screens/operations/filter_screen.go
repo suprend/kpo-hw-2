@@ -19,7 +19,6 @@ const (
 	fieldFilterType      = "filter_type"
 )
 
-// NewFilter constructs filter configuration screen prior to listing operations.
 func NewFilter(accounts []*domain.BankAccount, categories []*domain.Category) tui.Screen {
 	var screen *menus.Screen
 

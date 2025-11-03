@@ -15,13 +15,11 @@ import (
 	"kpo-hw-2/internal/tui/styles"
 )
 
-// Model coordinates screen stack and routes Bubble Tea messages.
 type Model struct {
 	ctx   *programContext
 	stack []Screen
 }
 
-// NewProgram constructs Bubble Tea model with provided root screen.
 func NewProgram(
 	baseCtx context.Context,
 	accountCommands *accountcmd.Service,
@@ -54,7 +52,6 @@ func NewProgram(
 	return m
 }
 
-// Init implements tea.Model.
 func (m *Model) Init() tea.Cmd {
 	if current := m.current(); current != nil {
 		return current.Init(m.ctx)
@@ -62,7 +59,6 @@ func (m *Model) Init() tea.Cmd {
 	return tea.Quit
 }
 
-// Update implements tea.Model.
 func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
@@ -103,7 +99,6 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, tea.Batch(cmds...)
 }
 
-// View implements tea.Model.
 func (m *Model) View() string {
 	current := m.current()
 	if current == nil {

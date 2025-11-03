@@ -8,7 +8,6 @@ import (
 	"kpo-hw-2/internal/tui/menus"
 )
 
-// NewList builds a read-only list of categories with their types.
 func NewList(categories []*domain.Category) tui.Screen {
 	items := make([]menus.MenuItem, 0, len(categories)+1)
 

@@ -7,9 +7,17 @@ import (
 	"kpo-hw-2/internal/domain/query"
 )
 
-// OperationFacade coordinates application use-cases for operations.
 type OperationFacade interface {
 	CreateOperation(
+		typ domain.OperationType,
+		accountID domain.ID,
+		categoryID domain.ID,
+		amount int64,
+		date time.Time,
+		description string,
+	) (*domain.Operation, error)
+	CreateOperationWithoutBalance(
+		id domain.ID,
 		typ domain.OperationType,
 		accountID domain.ID,
 		categoryID domain.ID,

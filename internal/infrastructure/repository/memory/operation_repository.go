@@ -9,13 +9,11 @@ import (
 	"kpo-hw-2/internal/domain/repository"
 )
 
-// operationRepository provides in-memory storage for operations.
 type operationRepository struct {
 	mu         sync.RWMutex
 	operations map[domain.ID]*domain.Operation
 }
 
-// NewOperationRepository constructs an in-memory OperationRepository implementation.
 func NewOperationRepository() repository.OperationRepository {
 	return &operationRepository{
 		operations: make(map[domain.ID]*domain.Operation),

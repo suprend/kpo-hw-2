@@ -11,7 +11,6 @@ import (
 	"kpo-hw-2/internal/tui/menus"
 )
 
-// NewEdit constructs screen for editing an existing operation.
 func NewEdit(operation *domain.Operation, accounts []*domain.BankAccount, categories []*domain.Category) tui.Screen {
 	var screen *menus.Screen
 

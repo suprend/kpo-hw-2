@@ -1,6 +1,5 @@
 package domain
 
-// OperationType defines allowed operation/category types.
 type OperationType string
 
 const (

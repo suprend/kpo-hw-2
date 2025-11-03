@@ -11,15 +11,12 @@ import (
 	filesmodel "kpo-hw-2/internal/files/model"
 )
 
-// YAMLExporter produces visitors that render domain entities into YAML.
 type YAMLExporter struct{}
 
-// NewYAMLExporter constructs exporter instance.
 func NewYAMLExporter() *YAMLExporter {
 	return &YAMLExporter{}
 }
 
-// Format returns metadata describing YAML export.
 func (e *YAMLExporter) Format() appfiles.Format {
 	return appfiles.Format{
 		Key:         "yaml",
@@ -29,14 +26,12 @@ func (e *YAMLExporter) Format() appfiles.Format {
 	}
 }
 
-// NewVisitor constructs visitor bound to provided writer.
 func (e *YAMLExporter) NewVisitor(writer io.Writer) (fileexport.Visitor, error) {
 	return &yamlVisitor{
 		writer: writer,
 	}, nil
 }
 
-// compile-time check
 var _ fileexport.Exporter = (*YAMLExporter)(nil)
 
 type yamlVisitor struct {
@@ -104,5 +99,4 @@ func (v *yamlVisitor) Finalize() error {
 	return encoder.Close()
 }
 
-// compile-time check
 var _ fileexport.Visitor = (*yamlVisitor)(nil)

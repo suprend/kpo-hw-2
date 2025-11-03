@@ -9,13 +9,11 @@ import (
 	"kpo-hw-2/internal/domain/repository"
 )
 
-// categoryRepository provides in-memory storage for categories.
 type categoryRepository struct {
 	mu         sync.RWMutex
 	categories map[domain.ID]*domain.Category
 }
 
-// NewCategoryRepository constructs an in-memory CategoryRepository implementation.
 func NewCategoryRepository() repository.CategoryRepository {
 	return &categoryRepository{
 		categories: make(map[domain.ID]*domain.Category),

@@ -6,7 +6,6 @@ import (
 	"kpo-hw-2/internal/domain"
 )
 
-// OperationFactory creates and rebuilds operation aggregates.
 type OperationFactory interface {
 	Create(
 		typ domain.OperationType,
@@ -27,7 +26,6 @@ type OperationFactory interface {
 	) (*domain.Operation, error)
 }
 
-// NewOperationFactory constructs factory backed by ID generator.
 func NewOperationFactory(idGenerator domain.IDGenerator) OperationFactory {
 	return &operationFactory{idGenerator: idGenerator}
 }

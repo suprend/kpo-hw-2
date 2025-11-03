@@ -5,7 +5,6 @@ import (
 	"strings"
 )
 
-// ApplyValidation runs provided validator, updates field error text and reports whether an error occurred.
 func ApplyValidation(screen *Screen, fieldKey, value string, validate func(string) error) bool {
 	if screen == nil || validate == nil {
 		return false
@@ -20,7 +19,6 @@ func ApplyValidation(screen *Screen, fieldKey, value string, validate func(strin
 	return false
 }
 
-// ClearFields resets value and error state for provided keys.
 func ClearFields(screen *Screen, keys ...string) {
 	if screen == nil {
 		return
@@ -32,7 +30,6 @@ func ClearFields(screen *Screen, keys ...string) {
 	}
 }
 
-// ValidateNonEmpty ensures that value is not blank (after trimming).
 func ValidateNonEmpty(value, message string) error {
 	if strings.TrimSpace(value) == "" {
 		if message == "" {

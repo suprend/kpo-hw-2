@@ -100,7 +100,6 @@ func extractType(ptr any) (reflect.Type, error) {
 	return t.Elem(), nil
 }
 
-// Register wires a constructor for interface T using generics.
 func Register[T any](c Container, constructor func(Container) (T, error)) error {
 	interfacePtr := (*T)(nil)
 	return c.Register(interfacePtr, func(container Container) (any, error) {
@@ -112,13 +111,11 @@ func Register[T any](c Container, constructor func(Container) (T, error)) error 
 	})
 }
 
-// Provide caches a singleton instance for interface T.
 func Provide[T any](c Container, instance T) error {
 	interfacePtr := (*T)(nil)
 	return c.Provide(interfacePtr, instance)
 }
 
-// Resolve returns a dependency implementing interface T.
 func Resolve[T any](c Container) (T, error) {
 	interfacePtr := (*T)(nil)
 

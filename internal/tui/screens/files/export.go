@@ -16,7 +16,7 @@ const (
 func newExportScreen(ctx tui.ScreenContext) tui.Screen {
 	var screen *menus.Screen
 
-    formats, options, defaultIndex := loadExportFormatsWithOptions(ctx)
+	formats, options, defaultIndex := loadExportFormatsWithOptions(ctx)
 	if len(formats) == 0 {
 		return emptyFormatsScreen("Экспорт данных")
 	}

@@ -15,15 +15,12 @@ import (
 	filesmodel "kpo-hw-2/internal/files/model"
 )
 
-// CSVImporter парсит данные из CSV, экспортированного приложением.
 type CSVImporter struct{}
 
-// NewCSVImporter создает экземпляр CSV импортера.
 func NewCSVImporter() *CSVImporter {
 	return &CSVImporter{}
 }
 
-// Format описывает поддерживаемый формат.
 func (i *CSVImporter) Format() appfiles.Format {
 	return appfiles.Format{
 		Key:         "csv",
@@ -33,7 +30,6 @@ func (i *CSVImporter) Format() appfiles.Format {
 	}
 }
 
-// Parse преобразует сырые данные в транспортную структуру.
 func (i *CSVImporter) Parse(data []byte) (filesmodel.Payload, error) {
 	if len(data) == 0 {
 		return filesmodel.Payload{}, nil
@@ -61,12 +57,10 @@ func (i *CSVImporter) Parse(data []byte) (filesmodel.Payload, error) {
 			continue
 		}
 
-		// Trim all values to avoid stray whitespace/BOM.
 		for i := range record {
 			record[i] = strings.TrimSpace(strings.TrimPrefix(record[i], "\ufeff"))
 		}
 
-		// Auto-skip header row if present.
 		if !headerSkipped && len(record) > 0 && strings.EqualFold(record[0], "entity") {
 			headerSkipped = true
 			continue

@@ -9,7 +9,6 @@ import (
 	"kpo-hw-2/internal/tui/styles"
 )
 
-// Screen renders menu composed of items (actions or inputs).
 type Screen struct {
 	title    string
 	intro    string
@@ -19,7 +18,6 @@ type Screen struct {
 	emptyMsg string
 }
 
-// NewScreen constructs new menu screen instance.
 func NewScreen(title, intro string, items []MenuItem) *Screen {
 	values := make(Values)
 	for _, item := range items {
@@ -34,10 +32,8 @@ func NewScreen(title, intro string, items []MenuItem) *Screen {
 	}
 }
 
-// Name implements tui.Screen.
 func (s *Screen) Name() string { return s.title }
 
-// Init implements tui.Screen.
 func (s *Screen) Init(tui.ScreenContext) tea.Cmd {
 	if len(s.items) == 0 {
 		return nil
@@ -46,7 +42,6 @@ func (s *Screen) Init(tui.ScreenContext) tea.Cmd {
 	return s.items[s.cursor].Focus()
 }
 
-// Update implements tui.Screen.
 func (s *Screen) Update(msg tea.Msg, ctx tui.ScreenContext) tui.Result {
 	if len(s.items) == 0 {
 		return tui.Result{}
@@ -85,13 +80,11 @@ func (s *Screen) Update(msg tea.Msg, ctx tui.ScreenContext) tui.Result {
 	return result
 }
 
-// WithEmptyMessage configures placeholder text shown when menu has no items.
 func (s *Screen) WithEmptyMessage(message string) *Screen {
 	s.emptyMsg = message
 	return s
 }
 
-// View implements tui.Screen.
 func (s *Screen) View() string {
 	if len(s.items) == 0 {
 		if s.emptyMsg != "" {
@@ -153,7 +146,6 @@ func (s *Screen) moveCursor(delta int) tui.Result {
 	return tui.Result{}
 }
 
-// SetFieldError updates validation error for input identified by key.
 func (s *Screen) SetFieldError(key, message string) {
 	item := s.findItem(key)
 	if item == nil {
@@ -166,7 +158,6 @@ func (s *Screen) SetFieldError(key, message string) {
 	item.SetError(message)
 }
 
-// SetValue updates underlying value of input identified by key.
 func (s *Screen) SetValue(key, value string) {
 	item := s.findItem(key)
 	if item == nil {
@@ -176,7 +167,6 @@ func (s *Screen) SetValue(key, value string) {
 	s.values[key] = item.Value()
 }
 
-// Value returns latest stored value for given key.
 func (s *Screen) Value(key string) string {
 	return s.values[key]
 }

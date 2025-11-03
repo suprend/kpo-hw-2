@@ -9,17 +9,14 @@ import (
 	"kpo-hw-2/internal/domain"
 )
 
-// ULIDGenerator produces ULID identifiers using time and random entropy.
 type ULIDGenerator struct {
 	mu sync.Mutex
 }
 
-// NewULIDGenerator constructs a ULID generator.
 func NewULIDGenerator() *ULIDGenerator {
 	return &ULIDGenerator{}
 }
 
-// NewID generates a new ULID string and validates it via domain rules.
 func (g *ULIDGenerator) NewID() (domain.ID, error) {
 	g.mu.Lock()
 	defer g.mu.Unlock()
@@ -34,7 +31,6 @@ func (g *ULIDGenerator) NewID() (domain.ID, error) {
 	return domain.ParseID(raw)
 }
 
-// Ensure ULIDGenerator implements domain.IDGenerator.
 var _ domain.IDGenerator = (*ULIDGenerator)(nil)
 
 func encodeULID(ts uint64, randomness [10]byte) string {

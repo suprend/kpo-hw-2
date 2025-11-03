@@ -14,15 +14,11 @@ import (
 )
 
 var (
-	// ErrUnknownFormat возвращается, если формат не зарегистрирован.
 	ErrUnknownFormat = errors.New("import: unknown format")
-	// ErrInvalidSource возвращается, если не передан источник данных.
 	ErrInvalidSource = errors.New("import: invalid source")
-	// ErrInvalidPath возвращается, если путь к файлу некорректен.
-	ErrInvalidPath = errors.New("import: invalid source path")
+	ErrInvalidPath   = errors.New("import: invalid source path")
 )
 
-// Result описывает итог импорта.
 type Result struct {
 	CreatedAccounts   int
 	CreatedCategories int
@@ -33,7 +29,6 @@ type Result struct {
 	SkippedOperations int
 }
 
-// Service реализует шаблонный метод импорта данных через зарегистрированных парсеров.
 type Service struct {
 	accounts   facade.AccountFacade
 	categories facade.CategoryFacade
@@ -43,7 +38,6 @@ type Service struct {
 	order     []files.Format
 }
 
-// NewService регистрирует доступные импортеры.
 func NewService(
 	accountFacade facade.AccountFacade,
 	categoryFacade facade.CategoryFacade,
@@ -77,14 +71,12 @@ func NewService(
 	}
 }
 
-// Formats возвращает список зарегистрированных форматов.
 func (s *Service) Formats() []files.Format {
 	out := make([]files.Format, len(s.order))
 	copy(out, s.order)
 	return out
 }
 
-// FormatFor возвращает метаданные для конкретного формата.
 func (s *Service) FormatFor(key string) (files.Format, bool) {
 	imp, ok := s.importers[key]
 	if !ok {
@@ -93,7 +85,6 @@ func (s *Service) FormatFor(key string) (files.Format, bool) {
 	return imp.Format(), true
 }
 
-// ImportFromPath открывает файл и делегирует выполнение Import.
 func (s *Service) ImportFromPath(formatKey, path string) (Result, error) {
 	if strings.TrimSpace(path) == "" {
 		return Result{}, ErrInvalidPath
@@ -108,7 +99,6 @@ func (s *Service) ImportFromPath(formatKey, path string) (Result, error) {
 	return s.Import(formatKey, file)
 }
 
-// Import читает данные из источника, парсит их и передаёт в фасады.
 func (s *Service) Import(formatKey string, reader io.Reader) (Result, error) {
 	if reader == nil {
 		return Result{}, ErrInvalidSource
@@ -141,8 +131,20 @@ func (s *Service) applyPayload(payload filesmodel.Payload) (Result, error) {
 	if s.accounts != nil {
 		for _, dto := range payload.Accounts {
 			name := strings.TrimSpace(dto.Name)
-			account, err := s.accounts.CreateAccount(name)
+			id := domain.ID(strings.TrimSpace(dto.ID))
+			if id == "" {
+				result.SkippedAccounts++
+				continue
+			}
+
+			account, err := s.accounts.CreateAccountWithID(id, name, dto.Balance)
 			if err != nil {
+				if errors.Is(err, domain.ErrAlreadyExists) {
+					accountIDs[dto.ID] = id
+					result.SkippedAccounts++
+					continue
+				}
+
 				result.SkippedAccounts++
 				continue
 			}
@@ -156,8 +158,20 @@ func (s *Service) applyPayload(payload filesmodel.Payload) (Result, error) {
 		for _, dto := range payload.Categories {
 			name := strings.TrimSpace(dto.Name)
 			typ := domain.OperationType(strings.ToLower(strings.TrimSpace(dto.Type)))
-			category, err := s.categories.CreateCategory(name, typ)
+			id := domain.ID(strings.TrimSpace(dto.ID))
+			if id == "" {
+				result.SkippedCategories++
+				continue
+			}
+
+			category, err := s.categories.CreateCategoryWithID(id, name, typ)
 			if err != nil {
+				if errors.Is(err, domain.ErrAlreadyExists) {
+					categoryIDs[dto.ID] = id
+					result.SkippedCategories++
+					continue
+				}
+
 				result.SkippedCategories++
 				continue
 			}
@@ -170,6 +184,12 @@ func (s *Service) applyPayload(payload filesmodel.Payload) (Result, error) {
 	if s.operations != nil {
 		for _, dto := range payload.Operations {
 			typ := domain.OperationType(strings.ToLower(strings.TrimSpace(dto.Type)))
+			id := domain.ID(strings.TrimSpace(dto.ID))
+			if id == "" {
+				result.SkippedOperations++
+				continue
+			}
+
 			accountID, ok := accountIDs[dto.BankAccountID]
 			if !ok {
 				result.SkippedOperations++
@@ -182,7 +202,8 @@ func (s *Service) applyPayload(payload filesmodel.Payload) (Result, error) {
 				continue
 			}
 
-			if _, err := s.operations.CreateOperation(
+			if _, err := s.operations.CreateOperationWithoutBalance(
+				id,
 				typ,
 				accountID,
 				categoryID,
@@ -190,6 +211,11 @@ func (s *Service) applyPayload(payload filesmodel.Payload) (Result, error) {
 				dto.Date,
 				strings.TrimSpace(dto.Description),
 			); err != nil {
+				if errors.Is(err, domain.ErrAlreadyExists) {
+					result.SkippedOperations++
+					continue
+				}
+
 				result.SkippedOperations++
 				continue
 			}
