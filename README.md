@@ -32,9 +32,11 @@
 - **Команда** — `internal/application/command/*` описывает пользовательские сценарии.
 - **Декоратор** — `internal/application/command/decorator/timed.go` измеряет длительность команд.
 - **Шаблонный метод** — `internal/application/files/import/service.go` определяет общий алгоритм импорта.
+- **Стратегия** — `internal/application/files/import.Service` и `.../export.Service` выбирают реализацию по ключу формата (JSON/YAML/CSV).
 - **Посетитель** — `internal/application/files/export/visitor.go` и конкретные экспортеры обрабатывают сущности при экспорте.
 - **Фабрика** — `internal/domain/factory/*.go` создают агрегаты с валидацией.
 - **Прокси (потенциал)** — in-memory репозитории могут быть расширены до прокси над постоянным хранилищем (кэш + БД).
+- **Service Locator / Singleton-per-type** — `internal/infrastructure/di/container.go` хранит созданные инстансы и возвращает одну копию зависимости на тип (репозитории, фасады, сервисы).
 
 ## Диаграмма зависимостей
 ```mermaid
